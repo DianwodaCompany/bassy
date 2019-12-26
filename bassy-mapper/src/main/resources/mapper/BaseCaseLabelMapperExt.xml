@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.BaseCaseLabelMapperExt">
+    <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.common.domain.dto.testcase.BaseCaseLabelDTO">
+        <id column="case_id" jdbcType="INTEGER" property="caseId"/>
+        <result column="label_id" jdbcType="INTEGER" property="labelId"/>
+        <result column="name" jdbcType="INTEGER" property="labelName"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+    </resultMap>
+
+    <select id="getTestCaseLabelInfo" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select case_id,label_id,`name`,`type` from base_case_label a LEFT JOIN label_info b ON a.label_id = b.id WHERE a.case_id=#{caseId};
+    </select>
+    <insert id="insertFromBaseLabel">
+        insert into base_case_label (case_id, label_id,
+        creator, creator_tm)
+        select
+        #{caseId} as case_id, label_id,
+        #{creator} as creator, #{creatorTm} as creator_tm
+        from base_case_label
+        where case_id = #{baseCaseId}
+    </insert>
+    <delete id="deleteByLabelType">
+        DELETE
+        FROM
+            b USING base_case_label AS b
+            LEFT JOIN label_info AS l ON b.label_id = l.id
+        WHERE
+            l.type = #{type}
+            AND b.case_id = #{caseId};
+  </delete>
+</mapper>

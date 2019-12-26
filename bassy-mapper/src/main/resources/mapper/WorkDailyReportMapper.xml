@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.WorkDailyReportMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.WorkDailyReport">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="workday" jdbcType="DATE" property="workday" />
+    <result column="staff_code" jdbcType="VARCHAR" property="staffCode" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="task_code" jdbcType="VARCHAR" property="taskCode" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="require_id" jdbcType="INTEGER" property="requireId" />
+    <result column="require_relate" jdbcType="VARCHAR" property="requireRelate" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="today_hour" jdbcType="REAL" property="todayHour" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="task_log_id" jdbcType="INTEGER" property="taskLogId" />
+    <result column="percent" jdbcType="INTEGER" property="percent" />
+    <result column="is_normal" jdbcType="TINYINT" property="isNormal" />
+    <result column="reason_detail" jdbcType="VARCHAR" property="reasonDetail" />
+    <result column="task_explain" jdbcType="VARCHAR" property="taskExplain" />
+    <result column="modify_tm" jdbcType="TIMESTAMP" property="modifyTm" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, workday, staff_code, staff_name, task_id, task_code, task_name, require_id, require_relate, 
+    project_id, project_name, today_hour, `type`, task_log_id, `percent`, is_normal, 
+    reason_detail, task_explain, modify_tm
+  </sql>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.WorkDailyReportExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from work_daily_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from work_daily_report
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from work_daily_report
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.WorkDailyReportExample">
+    delete from work_daily_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.WorkDailyReport">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into work_daily_report (workday, staff_code, staff_name, 
+      task_id, task_code, task_name, 
+      require_id, require_relate, project_id, 
+      project_name, today_hour, `type`, 
+      task_log_id, `percent`, is_normal, 
+      reason_detail, task_explain, modify_tm
+      )
+    values (#{workday,jdbcType=DATE}, #{staffCode,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, 
+      #{taskId,jdbcType=INTEGER}, #{taskCode,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, 
+      #{requireId,jdbcType=INTEGER}, #{requireRelate,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, 
+      #{projectName,jdbcType=VARCHAR}, #{todayHour,jdbcType=REAL}, #{type,jdbcType=INTEGER}, 
+      #{taskLogId,jdbcType=INTEGER}, #{percent,jdbcType=INTEGER}, #{isNormal,jdbcType=TINYINT}, 
+      #{reasonDetail,jdbcType=VARCHAR}, #{taskExplain,jdbcType=VARCHAR}, #{modifyTm,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.WorkDailyReport">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into work_daily_report
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="workday != null">
+        workday,
+      </if>
+      <if test="staffCode != null">
+        staff_code,
+      </if>
+      <if test="staffName != null">
+        staff_name,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="taskCode != null">
+        task_code,
+      </if>
+      <if test="taskName != null">
+        task_name,
+      </if>
+      <if test="requireId != null">
+        require_id,
+      </if>
+      <if test="requireRelate != null">
+        require_relate,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="projectName != null">
+        project_name,
+      </if>
+      <if test="todayHour != null">
+        today_hour,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="taskLogId != null">
+        task_log_id,
+      </if>
+      <if test="percent != null">
+        `percent`,
+      </if>
+      <if test="isNormal != null">
+        is_normal,
+      </if>
+      <if test="reasonDetail != null">
+        reason_detail,
+      </if>
+      <if test="taskExplain != null">
+        task_explain,
+      </if>
+      <if test="modifyTm != null">
+        modify_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="workday != null">
+        #{workday,jdbcType=DATE},
+      </if>
+      <if test="staffCode != null">
+        #{staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null">
+        #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="taskCode != null">
+        #{taskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="requireId != null">
+        #{requireId,jdbcType=INTEGER},
+      </if>
+      <if test="requireRelate != null">
+        #{requireRelate,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="todayHour != null">
+        #{todayHour,jdbcType=REAL},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="taskLogId != null">
+        #{taskLogId,jdbcType=INTEGER},
+      </if>
+      <if test="percent != null">
+        #{percent,jdbcType=INTEGER},
+      </if>
+      <if test="isNormal != null">
+        #{isNormal,jdbcType=TINYINT},
+      </if>
+      <if test="reasonDetail != null">
+        #{reasonDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="taskExplain != null">
+        #{taskExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTm != null">
+        #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.WorkDailyReportExample" resultType="java.lang.Long">
+    select count(*) from work_daily_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update work_daily_report
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.workday != null">
+        workday = #{record.workday,jdbcType=DATE},
+      </if>
+      <if test="record.staffCode != null">
+        staff_code = #{record.staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.staffName != null">
+        staff_name = #{record.staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskId != null">
+        task_id = #{record.taskId,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskCode != null">
+        task_code = #{record.taskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskName != null">
+        task_name = #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requireId != null">
+        require_id = #{record.requireId,jdbcType=INTEGER},
+      </if>
+      <if test="record.requireRelate != null">
+        require_relate = #{record.requireRelate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectId != null">
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectName != null">
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.todayHour != null">
+        today_hour = #{record.todayHour,jdbcType=REAL},
+      </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskLogId != null">
+        task_log_id = #{record.taskLogId,jdbcType=INTEGER},
+      </if>
+      <if test="record.percent != null">
+        `percent` = #{record.percent,jdbcType=INTEGER},
+      </if>
+      <if test="record.isNormal != null">
+        is_normal = #{record.isNormal,jdbcType=TINYINT},
+      </if>
+      <if test="record.reasonDetail != null">
+        reason_detail = #{record.reasonDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskExplain != null">
+        task_explain = #{record.taskExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyTm != null">
+        modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update work_daily_report
+    set id = #{record.id,jdbcType=BIGINT},
+      workday = #{record.workday,jdbcType=DATE},
+      staff_code = #{record.staffCode,jdbcType=VARCHAR},
+      staff_name = #{record.staffName,jdbcType=VARCHAR},
+      task_id = #{record.taskId,jdbcType=INTEGER},
+      task_code = #{record.taskCode,jdbcType=VARCHAR},
+      task_name = #{record.taskName,jdbcType=VARCHAR},
+      require_id = #{record.requireId,jdbcType=INTEGER},
+      require_relate = #{record.requireRelate,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      today_hour = #{record.todayHour,jdbcType=REAL},
+      `type` = #{record.type,jdbcType=INTEGER},
+      task_log_id = #{record.taskLogId,jdbcType=INTEGER},
+      `percent` = #{record.percent,jdbcType=INTEGER},
+      is_normal = #{record.isNormal,jdbcType=TINYINT},
+      reason_detail = #{record.reasonDetail,jdbcType=VARCHAR},
+      task_explain = #{record.taskExplain,jdbcType=VARCHAR},
+      modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.WorkDailyReport">
+    update work_daily_report
+    <set>
+      <if test="workday != null">
+        workday = #{workday,jdbcType=DATE},
+      </if>
+      <if test="staffCode != null">
+        staff_code = #{staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null">
+        staff_name = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="taskCode != null">
+        task_code = #{taskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="requireId != null">
+        require_id = #{requireId,jdbcType=INTEGER},
+      </if>
+      <if test="requireRelate != null">
+        require_relate = #{requireRelate,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="todayHour != null">
+        today_hour = #{todayHour,jdbcType=REAL},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="taskLogId != null">
+        task_log_id = #{taskLogId,jdbcType=INTEGER},
+      </if>
+      <if test="percent != null">
+        `percent` = #{percent,jdbcType=INTEGER},
+      </if>
+      <if test="isNormal != null">
+        is_normal = #{isNormal,jdbcType=TINYINT},
+      </if>
+      <if test="reasonDetail != null">
+        reason_detail = #{reasonDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="taskExplain != null">
+        task_explain = #{taskExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTm != null">
+        modify_tm = #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.WorkDailyReport">
+    update work_daily_report
+    set workday = #{workday,jdbcType=DATE},
+      staff_code = #{staffCode,jdbcType=VARCHAR},
+      staff_name = #{staffName,jdbcType=VARCHAR},
+      task_id = #{taskId,jdbcType=INTEGER},
+      task_code = #{taskCode,jdbcType=VARCHAR},
+      task_name = #{taskName,jdbcType=VARCHAR},
+      require_id = #{requireId,jdbcType=INTEGER},
+      require_relate = #{requireRelate,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=INTEGER},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      today_hour = #{todayHour,jdbcType=REAL},
+      `type` = #{type,jdbcType=INTEGER},
+      task_log_id = #{taskLogId,jdbcType=INTEGER},
+      `percent` = #{percent,jdbcType=INTEGER},
+      is_normal = #{isNormal,jdbcType=TINYINT},
+      reason_detail = #{reasonDetail,jdbcType=VARCHAR},
+      task_explain = #{taskExplain,jdbcType=VARCHAR},
+      modify_tm = #{modifyTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

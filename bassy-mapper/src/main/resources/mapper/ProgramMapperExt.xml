@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.ProgramMapperExt">
+    <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.Program">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="program_name" jdbcType="VARCHAR" property="programName" />
+        <result column="program_type" jdbcType="VARCHAR" property="programType" />
+        <result column="program_module" jdbcType="INTEGER" property="programModule" />
+        <result column="process_module" jdbcType="INTEGER" property="processModule" />
+        <result column="persons" jdbcType="VARCHAR" property="persons" />
+        <result column="core_nodes" jdbcType="VARCHAR" property="coreNodes" />
+        <result column="requires" jdbcType="VARCHAR" property="requires" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="work_id" jdbcType="VARCHAR" property="workId" />
+        <result column="pressing_reason" jdbcType="VARCHAR" property="pressingReason" />
+        <result column="is_check" jdbcType="VARCHAR" property="isCheck" />
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+        <result column="create_tm" jdbcType="TIMESTAMP" property="createTm" />
+        <result column="modify_tm" jdbcType="TIMESTAMP" property="modifyTm" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="inner_project_type" jdbcType="VARCHAR" property="innerProjectType" />
+        <result column="each_task_work_hour" jdbcType="REAL" property="eachTaskWorkHour" />
+        <result column="daily_task_num" jdbcType="INTEGER" property="dailyTaskNum" />
+    </resultMap>
+
+    <resultMap id="ProgramNameMap" type="com.dianwoda.test.bassy.db.entity.ProgramNameDTO">
+        <result column="id" jdbcType="VARCHAR" property="programId"/>
+        <result column="program_name" jdbcType="INTEGER" property="programName"/>
+    </resultMap>
+    <select id="selectProgramNameByKeyword" resultMap="ProgramNameMap">
+        SELECT id,program_name from qualitydb.program
+        WHERE id LIKE concat("%", #{searchKey} ,"%")
+        or program_name LIKE concat("%", #{searchKey},"%");
+    </select>
+
+    <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.Program" keyProperty="id">
+        insert into program (id, program_name, program_type,
+        program_module, process_module, persons,
+        core_nodes, requires, remark,
+        work_id, pressing_reason, is_check,
+        start_time, end_time, `status`,
+        create_tm, modify_tm, creator,
+        modifier, inner_project_type, each_task_work_hour,
+        daily_task_num)
+        values (#{id,jdbcType=INTEGER}, #{programName,jdbcType=VARCHAR}, #{programType,jdbcType=VARCHAR},
+        #{programModule,jdbcType=INTEGER}, #{processModule,jdbcType=INTEGER}, #{persons,jdbcType=VARCHAR},
+        #{coreNodes,jdbcType=VARCHAR}, #{requires,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+        #{workId,jdbcType=VARCHAR}, #{pressingReason,jdbcType=VARCHAR}, #{isCheck,jdbcType=VARCHAR},
+        #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
+        #{createTm,jdbcType=TIMESTAMP}, #{modifyTm,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR},
+        #{modifier,jdbcType=VARCHAR}, #{innerProjectType,jdbcType=VARCHAR}, #{eachTaskWorkHour,jdbcType=REAL},
+        #{dailyTaskNum,jdbcType=INTEGER})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="selectUnPushedProgram" parameterType="string" resultMap="BaseResultMap">
+        select * from program p INNER JOIN (
+          select distinct program_id , sum(casecount) as totalcase, sum(push) as totalpush from program_require pr  INNER JOIN (
+            select `require`, count(*) as casecount, (case when sum(pushed) is null then 0 else sum(pushed) end) as push from base_case where family = 1 GROUP BY `require`) as bc
+          on pr.require_id = bc.`require` group by program_id having totalcase > totalpush and totalcase != 0) as tmp
+        on p.id = tmp.program_id
+        where program_type != 'inner'  and `status` = 'end' and program_name like concat("%", #{programName},"%")
+    </select>
+
+    <select id="selectAllPushedProgram" parameterType="string" resultMap="BaseResultMap">
+        select * from program p INNER JOIN (
+          select distinct program_id, sum(casecount) as totalcase, sum(push) as totalpush from program_require pr  INNER JOIN (
+            select `require`, count(*) as casecount, (case when sum(pushed) is null then 0 else sum(pushed) end) as push from base_case where family = 1 GROUP BY `require`) as bc
+          on pr.require_id = bc.`require` group by program_id HAVING totalcase=totalpush and totalcase != 0) as tmp
+        on p.id = tmp.program_id
+        where program_type != 'inner'  and `status` = 'end' and program_name like concat("%", #{programName},"%")
+    </select>
+</mapper>

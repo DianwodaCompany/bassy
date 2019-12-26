@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.BaseCaseMapperExt">
+    <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.BaseCase" useGeneratedKeys="true" keyProperty="id">
+    insert into base_case (id, product, `module`,
+      `require`, title, pri,
+      `type`, `status`, last_edited_by,
+      last_edited_date, version, parent_case,
+      family, execute_status, edited,
+      pushed, deleted, precondition
+      )
+    values (#{id,jdbcType=INTEGER}, #{product,jdbcType=INTEGER}, #{module,jdbcType=INTEGER},
+      #{require,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{pri,jdbcType=TINYINT},
+      #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{lastEditedBy,jdbcType=VARCHAR},
+      #{lastEditedDate,jdbcType=TIMESTAMP}, #{version,jdbcType=TINYINT}, #{parentCase,jdbcType=INTEGER},
+      #{family,jdbcType=TINYINT}, #{executeStatus,jdbcType=TINYINT}, #{edited,jdbcType=TINYINT},
+      #{pushed,jdbcType=TINYINT}, #{deleted,jdbcType=TINYINT}, #{precondition,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+
+  <insert id="insertFromBaseCase" parameterType="com.dianwoda.test.bassy.db.entity.BaseCase" useGeneratedKeys="true" keyProperty="id">
+    insert into base_case (product, `module`,
+      `require`, title, pri,
+      `type`, `status`, last_edited_by,
+      last_edited_date, version, parent_case,
+      family, execute_status, edited,
+      pushed, deleted, precondition
+      )
+    select
+      product, `module`,
+      #{require} as `require`, title, pri,
+      `type`, `status`, #{lastEditedBy} as last_edited_by,
+      #{lastEditedDate} as last_edited_date, version, #{parentCase} as parent_case,
+      1 as family, 0 as execute_status, 0 as edited,
+      1 as pushed, 0 as deleted, precondition
+    from base_case where id = #{parentCase}
+  </insert>
+</mapper>

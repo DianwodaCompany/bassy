@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.BBSTagMapperExt">
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into bbs_tag (id, bbs_id, tag, create_tm, modify_tm)
+        values
+        <foreach collection ="list" index= "index" separator ="," item="tags">
+            (
+            #{tags.id,jdbcType=INTEGER}, #{tag.bbsId,jdbcType=INTEGER}, #{tags.tag,jdbcType=VARCHAR},
+            #{tags.createTm,jdbcType=TIMESTAMP}, #{tags.modifyTm,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

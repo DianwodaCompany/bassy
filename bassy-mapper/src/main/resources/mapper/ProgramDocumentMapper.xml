@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.ProgramDocumentMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.ProgramDocument">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="program_id" jdbcType="INTEGER" property="programId" />
+    <result column="require_id" jdbcType="INTEGER" property="requireId" />
+    <result column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="document_name" jdbcType="VARCHAR" property="documentName" />
+    <result column="document_path" jdbcType="VARCHAR" property="documentPath" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_tm" jdbcType="TIMESTAMP" property="createTm" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modify_tm" jdbcType="TIMESTAMP" property="modifyTm" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, program_id, require_id, task_id, document_name, document_path, `status`, creator, 
+    create_tm, modifier, modify_tm
+  </sql>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramDocumentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from program_document
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from program_document
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from program_document
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramDocumentExample">
+    delete from program_document
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.ProgramDocument">
+    insert into program_document (id, program_id, require_id, 
+      task_id, document_name, document_path, 
+      `status`, creator, create_tm, 
+      modifier, modify_tm)
+    values (#{id,jdbcType=INTEGER}, #{programId,jdbcType=INTEGER}, #{requireId,jdbcType=INTEGER}, 
+      #{taskId,jdbcType=INTEGER}, #{documentName,jdbcType=VARCHAR}, #{documentPath,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{creator,jdbcType=VARCHAR}, #{createTm,jdbcType=TIMESTAMP}, 
+      #{modifier,jdbcType=VARCHAR}, #{modifyTm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.ProgramDocument">
+    insert into program_document
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="programId != null">
+        program_id,
+      </if>
+      <if test="requireId != null">
+        require_id,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="documentName != null">
+        document_name,
+      </if>
+      <if test="documentPath != null">
+        document_path,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="createTm != null">
+        create_tm,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="modifyTm != null">
+        modify_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="programId != null">
+        #{programId,jdbcType=INTEGER},
+      </if>
+      <if test="requireId != null">
+        #{requireId,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="documentName != null">
+        #{documentName,jdbcType=VARCHAR},
+      </if>
+      <if test="documentPath != null">
+        #{documentPath,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTm != null">
+        #{createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTm != null">
+        #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramDocumentExample" resultType="java.lang.Long">
+    select count(*) from program_document
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update program_document
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.programId != null">
+        program_id = #{record.programId,jdbcType=INTEGER},
+      </if>
+      <if test="record.requireId != null">
+        require_id = #{record.requireId,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskId != null">
+        task_id = #{record.taskId,jdbcType=INTEGER},
+      </if>
+      <if test="record.documentName != null">
+        document_name = #{record.documentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.documentPath != null">
+        document_path = #{record.documentPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.creator != null">
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTm != null">
+        create_tm = #{record.createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifier != null">
+        modifier = #{record.modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyTm != null">
+        modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update program_document
+    set id = #{record.id,jdbcType=INTEGER},
+      program_id = #{record.programId,jdbcType=INTEGER},
+      require_id = #{record.requireId,jdbcType=INTEGER},
+      task_id = #{record.taskId,jdbcType=INTEGER},
+      document_name = #{record.documentName,jdbcType=VARCHAR},
+      document_path = #{record.documentPath,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=TINYINT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      create_tm = #{record.createTm,jdbcType=TIMESTAMP},
+      modifier = #{record.modifier,jdbcType=VARCHAR},
+      modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.ProgramDocument">
+    update program_document
+    <set>
+      <if test="programId != null">
+        program_id = #{programId,jdbcType=INTEGER},
+      </if>
+      <if test="requireId != null">
+        require_id = #{requireId,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="documentName != null">
+        document_name = #{documentName,jdbcType=VARCHAR},
+      </if>
+      <if test="documentPath != null">
+        document_path = #{documentPath,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTm != null">
+        create_tm = #{createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTm != null">
+        modify_tm = #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.ProgramDocument">
+    update program_document
+    set program_id = #{programId,jdbcType=INTEGER},
+      require_id = #{requireId,jdbcType=INTEGER},
+      task_id = #{taskId,jdbcType=INTEGER},
+      document_name = #{documentName,jdbcType=VARCHAR},
+      document_path = #{documentPath,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_tm = #{createTm,jdbcType=TIMESTAMP},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      modify_tm = #{modifyTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

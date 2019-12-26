@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.ProgramTaskLogMapperExt">
+  <select id="getTaskAbnormalList" resultType="map">
+    <![CDATA[
+    select ptl.*, pt.require_relate, pt.task_code, pt.task_name, pt.status, p.program_name, p.program_type, stf.staff_name
+    from program_task_log ptl
+    LEFT JOIN program_task pt on ptl.task_id = pt.id
+    LEFT JOIN program p on ptl.program_id = p.id
+    LEFT JOIN staff stf on ptl.tester = stf.staff_code
+    where ptl.is_normal = 0 and ptl.valid = 'enable' and ptl.modify_tm <= #{eDate} and ptl.modify_tm >= #{sDate}
+    order by ptl.modify_tm desc
+    ]]>
+</select>
+
+    <select id="getNotInnerProAbnormalList" resultType="map">
+        <![CDATA[
+    select ptl.*, pt.require_relate, pt.task_code, pt.task_name, pt.status, p.program_name, p.program_type, stf.staff_name
+    from program_task_log ptl
+    LEFT JOIN program_task pt on ptl.task_id = pt.id
+    LEFT JOIN program p on ptl.program_id = p.id
+    LEFT JOIN staff stf on ptl.tester = stf.staff_code
+    where ptl.is_normal = 0 and ptl.valid = 'enable' and ptl.duplicate_abnormal IS NULL and ptl.modify_tm <= #{eDate} and ptl.modify_tm >= #{sDate} and p.program_type != 'inner'
+    order by ptl.modify_tm desc
+    ]]>
+    </select>
+
+  <select id="getTaskAbnormalListByCondition" resultType="map">
+    <![CDATA[
+      select ptl.*, pt.require_relate, pt.task_code, pt.task_name, pt.status, p.program_name, p.program_type, stf.staff_name
+      from program_task_log ptl
+      LEFT JOIN program_task pt on ptl.task_id = pt.id
+      LEFT JOIN program p on ptl.program_id = p.id
+      LEFT JOIN staff stf on ptl.tester = stf.staff_code
+      where ptl.is_normal = 0 and ptl.valid = 'enable' and ptl.reason_team != "" and ptl.reason_type != "" and ptl.modify_tm <= #{eDate} and ptl.modify_tm >= #{sDate}
+    ]]>
+     <if test="story != null"><![CDATA[
+         AND (
+                ptl.require_id = #{story} OR
+                pt.require_relate LIKE concat('%',#{story},'%') OR
+                ptl.task_id = #{story} OR
+                pt.task_name LIKE concat('%',#{story},'%')
+              )
+      ]]></if>
+      <if test="reasonTeam != null"><![CDATA[
+         AND ptl.reason_team = #{reasonTeam}
+      ]]></if>
+      <if test="abnormalOwner != null"><![CDATA[
+         AND (
+            ptl.abnormal_owner = #{abnormalOwner} OR ptl.tester = #{abnormalOwner}
+         )
+      ]]></if>
+      <if test="abnormalType != null"><![CDATA[
+         AND ptl.abnormal_type = #{abnormalType}
+      ]]></if>
+    order by ptl.modify_tm desc
+  </select>
+
+    <select id="getTodayWorkActFromTaskLog" resultMap="com.dianwoda.test.bassy.db.dao.ProgramTaskLogMapper.BaseResultMap">
+      <![CDATA[
+      select ptl.program_id, ptl.task_id, ptl.require_id, ptl.id, ptl.percent,
+        ptl.task_explain, ptl.reason_detail, ptl.is_normal, ptl.task_status, sum(today_hour) as today_hour
+      from
+      (select * from program_task_log where tester = #{staffCode} and
+      modifier = #{staffCode} and modify_tm BETWEEN  #{start} AND  #{end}
+      order by id desc) as ptl
+      group by ptl.task_id having ptl.task_status <> 'init' and today_hour <> 0;
+    ]]>
+    </select>
+
+    <select id="getAbnormalTotalScore" resultType="map">
+        <![CDATA[
+      select convert(max(total_score), decimal(15,0)) total_score, depart from (
+	    select (@total_score := case when @pre_depart=abnormal.abnormal_depart then @total_score+abnormal.score else abnormal.score end) total_score,
+	    (@pre_depart :=abnormal.abnormal_depart) depart
+	    from (
+		  select ptl.*, (case when ptl.reason_level = 'p1' then 60 when ptl.reason_level = 'p2' then 30 else 8 end) as score
+		  from program_task_log ptl left join program p on ptl.program_id = p.id
+		  where ptl.is_normal = 0
+		  and ptl.abnormal_depart is not null
+		  and ptl.valid = 'enable'
+		  and ptl.duplicate_abnormal IS NULL
+		  and ptl.reason_team <> ""
+          and ptl.reason_type <> ""
+		  and ptl.abnormal_type = 1
+		  and ptl.program_id <> 0
+		  and p.program_type <> 'inner'
+		  and ptl.modify_tm <= #{end}
+		  and ptl.modify_tm >= #{start}
+		  ORDER BY ptl.abnormal_depart, ptl.reason_type, ptl.abnormal_owner
+		  ) as abnormal,
+		(select @total_score :=0, @pre_depart :=-1) as a
+      ) as result GROUP BY depart ORDER BY total_score desc
+    ]]>
+    </select>
+
+    <select id="getAbnormalTopReason" resultType="map">
+        <![CDATA[
+      select reason_sum, abnormal_depart, GROUP_CONCAT(reason_type) reason_type, (@i := case when @pre_depart= result.abnormal_depart then @i+1 else 1 end) rownum, (@pre_depart :=result.abnormal_depart) from (
+	    select (@reason_sum := case when @pre_reason=abnormal.reason_type then @reason_sum+abnormal.score else abnormal.score end) reason_sum,
+	    (@pre_reason :=abnormal.reason_type) reason_type, abnormal_depart
+	    from (
+		  select ptl.*, (case when ptl.reason_level = 'p1' then 60 when ptl.reason_level = 'p2' then 30 else 8 end) as score
+		  from program_task_log ptl left join program p on ptl.program_id = p.id
+		  where ptl.is_normal = 0
+		  and ptl.abnormal_depart is not null
+		  and ptl.valid = 'enable'
+		  and ptl.duplicate_abnormal IS NULL
+		  and ptl.reason_team <> ""
+          and ptl.reason_type <> ""
+		  and ptl.abnormal_type = 1
+		  and ptl.program_id <> 0
+		  and p.program_type <> 'inner'
+		  and ptl.modify_tm <= #{end}
+		  and ptl.modify_tm >= #{start}
+		  ORDER BY ptl.abnormal_depart, ptl.reason_type, ptl.abnormal_owner
+		  ) as abnormal,
+		(select @reason_sum :=0, @pre_reason :=-1) as a group by reason_type, abnormal_depart order by reason_sum desc, abnormal_depart desc
+      ) as result, (select @i := 0) as b GROUP BY abnormal_depart, reason_sum having rownum =1 order by abnormal_depart, reason_sum desc
+    ]]>
+    </select>
+
+    <select id="getAbnormalTopOwner" resultType="map">
+        <![CDATA[
+      select owner_sum, abnormal_depart, GROUP_CONCAT(abnormal_owner) abnormal_owner, (@i := case when @pre_depart= result.abnormal_depart then @i+1 else 1 end) rownum, (@pre_depart :=result.abnormal_depart) from (
+	    select (@owner_sum := case when @pre_owner=abnormal.abnormal_owner then @owner_sum+abnormal.score else abnormal.score end) owner_sum,
+	    (@pre_owner :=abnormal.abnormal_owner) abnormal_owner, abnormal_depart
+	    from (
+		  select ptl.*, (case when ptl.reason_level = 'p1' then 60 when ptl.reason_level = 'p2' then 30 else 8 end) as score
+		  from program_task_log ptl left join program p on ptl.program_id = p.id
+		  where ptl.is_normal = 0
+		  and ptl.abnormal_depart is not null
+		  and ptl.valid = 'enable'
+		  and ptl.duplicate_abnormal IS NULL
+		  and ptl.reason_team <> ""
+          and ptl.reason_type <> ""
+		  and ptl.abnormal_type = 1
+		  and ptl.program_id <> 0
+		  and p.program_type <> 'inner'
+		  and ptl.modify_tm <= #{end}
+		  and ptl.modify_tm >= #{start}
+		  ORDER BY ptl.abnormal_depart, ptl.reason_type, ptl.abnormal_owner
+		) as abnormal,
+		(select @owner_sum :=0, @pre_owner :=-1) as a group by abnormal_owner, abnormal_depart order by owner_sum desc, abnormal_depart desc
+      ) as result , (select @i := 0) as b GROUP BY abnormal_depart, owner_sum having rownum =1 order by abnormal_depart, owner_sum desc
+    ]]>
+    </select>
+    <select id="getAbnormalDetailByDepart" resultType="map">
+        <![CDATA[
+        select ptl.*, pt.require_relate, pt.task_code, pt.task_name, pt.status, p.program_name, p.program_type, stf.staff_name
+        from program_task_log ptl
+        LEFT JOIN program_task pt on ptl.task_id = pt.id
+        LEFT JOIN program p on ptl.program_id = p.id
+        LEFT JOIN staff stf on ptl.tester = stf.staff_code
+        where ptl.is_normal = 0
+        and ptl.valid = 'enable'
+        and ptl.duplicate_abnormal IS NULL
+        and ptl.reason_team <> ""
+        and ptl.reason_type <> ""
+        and ptl.abnormal_type = 1
+		and ptl.program_id <> 0
+		and p.program_type <> 'inner'
+        and ptl.modify_tm <= #{end}
+        and ptl.modify_tm >= #{start}
+        and abnormal_depart = #{abnormalDepart}
+        ORDER BY ptl.modify_tm desc
+    ]]>
+    </select>
+    <select id="getStaffWorkLoad" resultType="map">
+        <![CDATA[
+        select (@rownum := case when @pre_total > total_hour then @rownum +1 else @rownum end) rownum, (@pre_total := total_hour), tmp.*
+        from (
+	      select staff.*, (case when result.total_hour is null then 0 else result.total_hour end) total_hour  from staff left join (
+	        select sum(today_hour) total_hour, staff_code, staff_name, depart_id
+	        from program_task_log left join staff s on s.staff_code = tester
+	        where modify_tm between #{start} and #{end} and tester is not null group by tester) result
+	      on staff.staff_code = result.staff_code where staff.`status` = 10
+	      order by total_hour desc) as tmp, (select @rownum :=1, @pre_total :=-1) as a
+        ]]>
+    </select>
+    <select id="getDepartWorkLoad" resultType="map">
+        <![CDATA[
+        select (@rownum := case when @pre_perhour > per_hour then @rownum +1 else @rownum end) rownum, (@pre_perhour := per_hour), tmp.depart_id, tmp.per_hour
+        from (
+	      select staff.*, (case
+	      when total_hour is null then 0
+	      when depart_id = 0 then total_hour/3
+	      when depart_id = 1 then total_hour/8
+	      when depart_id = 2 then total_hour/8
+	      when depart_id = 3 then total_hour/4
+	      end) per_hour from staff left join
+	        (select sum(today_hour) total_hour, staff_code, staff_name
+	          from program_task_log left join staff s on s.staff_code = tester
+	          where modify_tm between #{start} and #{end} and tester is not null group by depart_id) result
+	        on staff.staff_code = result.staff_code where staff.`status` = 10
+	        order by per_hour desc) as tmp, (select @rownum :=1, @pre_depart :=-1, @pre_perhour :=-1) as a group by depart_id order by rownum
+        ]]>
+    </select>
+
+</mapper>

@@ -1,0 +1,23 @@
+{
+  "presets": [
+    "react",
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
+  ],
+  "comments": false,
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    ["import", {
+      "libraryName": "antd",
+      "style": true
+    }]
+  ]
+}

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.AutoTestStatisticsMapperExt">
+    <select id="getAllProjects" resultType="java.lang.String">
+        select distinct test_type AS testType from auto_test WHERE test_type!=""
+    </select>
+    <resultMap id="ExecutionTimesMap" type="com.dianwoda.test.bassy.db.entity.statistics.ExecutionTimesDTO">
+        <result column="test_type" jdbcType="VARCHAR" property="testType"/>
+        <result column="times" jdbcType="INTEGER" property="times"/>
+    </resultMap>
+    <select id="getAllProjectExecutionTimes" resultMap="ExecutionTimesMap">
+        SELECT test_type,COUNT(id) AS times FROM auto_test WHERE execute_type='INTEGRATE' AND execute_status="END" GROUP BY test_type;
+    </select>
+    <resultMap id="TestCaseMap" type="com.dianwoda.test.bassy.db.entity.statistics.CaseNumDTO">
+        <result column="test_type" jdbcType="VARCHAR" property="testType"/>
+        <result column="all_num" jdbcType="INTEGER" property="num"/>
+    </resultMap>
+    <select id="getAllProjectTestCase" resultMap="TestCaseMap">
+        SELECT
+	      test_type,
+	      ifnull(all_num, 0) AS all_num
+        FROM
+            (
+                SELECT
+                    *
+                FROM
+                    auto_test
+                WHERE
+                    test_type IS NOT NULL
+                AND execute_type = 'INTEGRATE'
+                AND execute_status = 'END'
+                ORDER BY
+                    id DESC
+            ) AS a
+        GROUP BY
+            test_type;
+    </select>
+    <resultMap id="FailMethodSortMap" type="com.dianwoda.test.bassy.db.entity.statistics.MethodSortDTO">
+        <result column="no" jdbcType="INTEGER" property="no"/>
+        <result column="test_type" jdbcType="VARCHAR" property="testType"/>
+        <result column="fail_method" jdbcType="VARCHAR" property="failMethod"/>
+        <result column="fail_reason" jdbcType="INTEGER" property="failReason"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="tester_code" jdbcType="VARCHAR" property="testerCode"/>
+        <result column="tester_name" jdbcType="VARCHAR" property="testerName"/>
+        <result column="num" jdbcType="INTEGER" property="num"/>
+    </resultMap>
+    <select id="getAllProjectFailMethodSort" resultMap="FailMethodSortMap">
+        SELECT  (@i :=@i + 1) AS no,a.*  FROM (
+          SELECT test_type , fail_method , COUNT(0) AS num,fail_reason ,remark,tester_code ,tester_name FROM auto_test_fail_result
+              WHERE fail_method!="" AND create_tm> DATE_SUB(NOW(),INTERVAL 7 DAY)
+                GROUP BY fail_method ORDER BY COUNT(0) DESC LIMIT 10
+                ) as a, (SELECT @i := 0) AS it ;
+    </select>
+    <resultMap id="FailReasonSortMap" type="com.dianwoda.test.bassy.db.entity.statistics.ReasonSortDTO">
+        <result column="test_type" jdbcType="VARCHAR" property="testType"/>
+        <result column="fail_reason" jdbcType="VARCHAR" property="failReason"/>
+        <result column="num" jdbcType="INTEGER" property="num"/>
+    </resultMap>
+    <select id="getAllProjectFailReasonSort" resultMap="FailReasonSortMap">
+        SELECT test_type , fail_reason ,COUNT(0) AS num from auto_test_fail_result WHERE fail_reason is not null GROUP BY fail_reason,test_type;
+    </select>
+    <resultMap id="PassingRateResultMap" type="com.dianwoda.test.bassy.db.entity.statistics.PassingRateDTO">
+        <result column="test_type" jdbcType="VARCHAR" property="testType"/>
+        <result column="day" jdbcType="VARCHAR" property="day"/>
+        <result column="rate" jdbcType="DOUBLE" property="rate"/>
+    </resultMap>
+    <select id="getAllProjectPassingRate" resultMap="PassingRateResultMap">
+        SELECT test_type,DATE_FORMAT(end_tm,'%m-%d') as day,(pass_num/all_num) as rate  FROM auto_test
+          WHERE all_num is not null AND execute_type="INTEGRATE" AND execute_status="END" AND end_tm > DATE_SUB(CURDATE(),INTERVAL 10 DAY)
+          ORDER BY end_tm,test_type;
+    </select>
+    <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.AutoTestStatistics">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="date" jdbcType="DATE" property="date"/>
+        <result column="execution_times" jdbcType="VARCHAR" property="executionTimes"/>
+        <result column="case_num" jdbcType="VARCHAR" property="caseNum"/>
+        <result column="passing_rate" jdbcType="VARCHAR" property="passingRate"/>
+        <result column="reason_sort" jdbcType="VARCHAR" property="reasonSort"/>
+        <result column="method_sort" jdbcType="VARCHAR" property="methodSort"/>
+    </resultMap>
+    <select id="getAllProjectRecentlyStatistics" resultMap="BaseResultMap">
+        SELECT * FROM auto_test_statistics ORDER BY id DESC limit 1;
+    </select>
+    <resultMap id="TodayFixRateMap" type="com.dianwoda.test.bassy.db.entity.statistics.TodayFixRateDTO">
+        <result column="date" jdbcType="DATE" property="date"/>
+        <result column="test_type" jdbcType="VARCHAR" property="testType"/>
+        <result column="fix_num" jdbcType="INTEGER" property="fixNum"/>
+        <result column="all_fail_num" jdbcType="INTEGER" property="allFailNum"/>
+        <result column="rate" jdbcType="DOUBLE" property="rate"/>
+        <result column="tester_code" jdbcType="VARCHAR" property="testerCode"/>
+        <result column="tester_name" jdbcType="VARCHAR" property="testerName"/>
+    </resultMap>
+    <select id="getAllProjectTodayFixRate" resultMap="TodayFixRateMap">
+        SELECT  (@i :=@i + 1) AS no,DATE(now()) as date,a.test_type,fix_num,all_fail_num,FORMAT(ifnull(fix_num/all_fail_num,0),4)as rate ,tester_code,tester_name from
+          (SELECT test_type , COUNT(0) AS all_fail_num,tester_code,tester_name FROM auto_test_fail_result WHERE DATE(create_tm)= DATE(now()) GROUP BY test_type ) AS a
+            LEFT JOIN
+          (SELECT test_type , COUNT(0) AS fix_num FROM auto_test_fail_result WHERE DATE(create_tm)= DATE(now()) and fail_reason is not null GROUP BY test_type ) AS b
+            ON a.test_type=b.test_type,(SELECT @i := 0) AS it;
+    </select>
+
+    <resultMap id="AddTestCaseNumMap" type="com.dianwoda.test.bassy.db.entity.statistics.AddCaseNumDTO">
+        <result column="today_num" jdbcType="INTEGER" property="todayNum"/>
+        <result column="before_num" jdbcType="INTEGER" property="beforeNum"/>
+        <result column="add_num" jdbcType="INTEGER" property="addNum"/>
+    </resultMap>
+    <select id="getAllProjectAddTestCaseNum" resultMap="AddTestCaseNumMap">
+        SELECT
+            a2.num AS today_num,
+            b2.num AS before_num,
+            a2.num - b2.num AS add_num
+        FROM
+            (
+                SELECT
+                    test_type,
+                    sum(all_num) AS num
+                FROM
+                    (
+                        SELECT
+                            test_type,
+                            ifnull(all_num, 0) AS all_num
+                        FROM
+                            (
+                                SELECT
+                                  *
+                                FROM
+                                  auto_test
+                                WHERE
+                                    test_type IS NOT NULL
+                                    AND execute_type = 'INTEGRATE'
+                                    AND execute_status = 'END'
+                                    ORDER BY
+                                    id DESC
+                            ) AS a
+                        GROUP BY
+                        test_type
+                    ) AS a1
+                ) AS a2
+            JOIN (
+                SELECT
+                    test_type,
+                    sum(all_num) AS num
+                FROM
+                    (
+                        SELECT
+                            test_type,
+                            ifnull(all_num, 0) AS all_num
+                        FROM
+                            (
+                                SELECT
+                                  *
+                                FROM
+                                  auto_test
+                                WHERE
+                                    test_type IS NOT NULL
+                                    AND execute_type = 'INTEGRATE'
+                                    AND execute_status = 'END'
+                                    AND DATE(creat_tm) &lt;DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+                                    ORDER BY
+                                      id DESC
+                                ) AS b
+                            GROUP BY
+                            test_type
+                    ) AS b1
+            ) AS b2 ON a2.test_type = b2.test_type;
+    </select>
+
+    <resultMap id="FailCaseNumMap" type="com.dianwoda.test.bassy.db.entity.statistics.FailCaseNumDTO">
+        <result column="fail_num" jdbcType="INTEGER" property="failNum"/>
+    </resultMap>
+    <select id="getAllProjectFailCaseNum" resultMap="FailCaseNumMap">
+        select COUNT(0) as fail_num from auto_test_fail_result WHERE TO_DAYS(create_tm) = TO_DAYS(NOW());
+    </select>
+</mapper>

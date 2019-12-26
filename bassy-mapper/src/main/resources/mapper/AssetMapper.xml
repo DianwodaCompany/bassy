@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.AssetMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.Asset">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="size" jdbcType="VARCHAR" property="size" />
+    <result column="amount" jdbcType="SMALLINT" property="amount" />
+    <result column="in_use" jdbcType="SMALLINT" property="inUse" />
+    <result column="borrower" jdbcType="VARCHAR" property="borrower" />
+    <result column="borrow_tm" jdbcType="TIMESTAMP" property="borrowTm" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="imei" jdbcType="VARCHAR" property="imei" />
+    <result column="asset_number" jdbcType="VARCHAR" property="assetNumber" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, `type`, brand, model, version, `size`, amount, in_use, borrower, borrow_tm, `status`, 
+    imei, asset_number
+  </sql>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.AssetExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from asset
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from asset
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from asset
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.AssetExample">
+    delete from asset
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.Asset">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into asset (`type`, brand, model, 
+      version, `size`, amount, 
+      in_use, borrower, borrow_tm, 
+      `status`, imei, asset_number
+      )
+    values (#{type,jdbcType=TINYINT}, #{brand,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{version,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{amount,jdbcType=SMALLINT}, 
+      #{inUse,jdbcType=SMALLINT}, #{borrower,jdbcType=VARCHAR}, #{borrowTm,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=SMALLINT}, #{imei,jdbcType=VARCHAR}, #{assetNumber,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.Asset">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into asset
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="model != null">
+        model,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="size != null">
+        `size`,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="inUse != null">
+        in_use,
+      </if>
+      <if test="borrower != null">
+        borrower,
+      </if>
+      <if test="borrowTm != null">
+        borrow_tm,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="imei != null">
+        imei,
+      </if>
+      <if test="assetNumber != null">
+        asset_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=SMALLINT},
+      </if>
+      <if test="inUse != null">
+        #{inUse,jdbcType=SMALLINT},
+      </if>
+      <if test="borrower != null">
+        #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTm != null">
+        #{borrowTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="imei != null">
+        #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="assetNumber != null">
+        #{assetNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.AssetExample" resultType="java.lang.Long">
+    select count(*) from asset
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update asset
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.brand != null">
+        brand = #{record.brand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.model != null">
+        model = #{record.model,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null">
+        version = #{record.version,jdbcType=VARCHAR},
+      </if>
+      <if test="record.size != null">
+        `size` = #{record.size,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=SMALLINT},
+      </if>
+      <if test="record.inUse != null">
+        in_use = #{record.inUse,jdbcType=SMALLINT},
+      </if>
+      <if test="record.borrower != null">
+        borrower = #{record.borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowTm != null">
+        borrow_tm = #{record.borrowTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=SMALLINT},
+      </if>
+      <if test="record.imei != null">
+        imei = #{record.imei,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assetNumber != null">
+        asset_number = #{record.assetNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update asset
+    set id = #{record.id,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=TINYINT},
+      brand = #{record.brand,jdbcType=VARCHAR},
+      model = #{record.model,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=VARCHAR},
+      `size` = #{record.size,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=SMALLINT},
+      in_use = #{record.inUse,jdbcType=SMALLINT},
+      borrower = #{record.borrower,jdbcType=VARCHAR},
+      borrow_tm = #{record.borrowTm,jdbcType=TIMESTAMP},
+      `status` = #{record.status,jdbcType=SMALLINT},
+      imei = #{record.imei,jdbcType=VARCHAR},
+      asset_number = #{record.assetNumber,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.Asset">
+    update asset
+    <set>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="brand != null">
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        `size` = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=SMALLINT},
+      </if>
+      <if test="inUse != null">
+        in_use = #{inUse,jdbcType=SMALLINT},
+      </if>
+      <if test="borrower != null">
+        borrower = #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTm != null">
+        borrow_tm = #{borrowTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="imei != null">
+        imei = #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="assetNumber != null">
+        asset_number = #{assetNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.Asset">
+    update asset
+    set `type` = #{type,jdbcType=TINYINT},
+      brand = #{brand,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      `size` = #{size,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=SMALLINT},
+      in_use = #{inUse,jdbcType=SMALLINT},
+      borrower = #{borrower,jdbcType=VARCHAR},
+      borrow_tm = #{borrowTm,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=SMALLINT},
+      imei = #{imei,jdbcType=VARCHAR},
+      asset_number = #{assetNumber,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

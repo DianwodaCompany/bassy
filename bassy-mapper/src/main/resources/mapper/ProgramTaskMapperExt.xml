@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.ProgramTaskMapperExt">
+  <select id="getHeapData" resultType="map">
+<![CDATA[
+select pt.*, p.program_name, stf.staff_name
+from program_task pt
+LEFT JOIN program p on pt.program_id = p.id
+LEFT JOIN staff stf on pt.tester = stf.staff_code
+where stf.depart_id = #{departId} and ((pt.start_tm <= #{eDate} and pt.end_tm >= #{sDate}) or (pt.actual_start_tm <= #{eDate} and pt.actual_end_tm >= #{sDate})) and pt.`status` in ('init','processing','end')
+]]>
+
+</select>
+  <select id="selectByCondition" resultMap="BaseResultMap">
+    SELECT DISTINCT pt.* FROM (program_task pt LEFT JOIN program p ON p.id = pt.program_id ) LEFT JOIN dictionary d ON pt.task_code=d.dict_code
+    WHERE 1 = 1
+    <if test="searchKey != null"><![CDATA[
+       AND (p.program_name LIKE concat('%',#{searchKey},'%') OR
+            pt.id = #{searchKey} OR
+            pt.task_name LIKE concat('%',#{searchKey},'%') OR
+            d.dict_value LIKE concat('%',#{searchKey},'%') OR
+            pt.require_id = #{searchKey} OR
+            pt.require_relate LIKE concat('%',#{searchKey},'%') OR
+            (pt.program_id != 0 and pt.program_id = #{searchKey}))
+    ]]></if>
+    <if test="endTm != null"><![CDATA[ AND pt.start_tm <= #{endTm} ]]></if>
+    <if test="startTm != null"><![CDATA[ AND pt.end_tm >= #{startTm} ]]></if>
+    <if test="status != null"><![CDATA[ AND pt.status = #{status} ]]></if>
+    <if test="tester != null"><![CDATA[ AND pt.tester = #{tester} ]]></if>
+    <if test="process != null"><![CDATA[ AND pt.program_process = #{process} ]]></if>
+      order by modify_tm desc
+  </select>
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.ProgramTask">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="program_id" jdbcType="INTEGER" property="programId" />
+    <result column="program_process" jdbcType="VARCHAR" property="programProcess" />
+    <result column="require_id" jdbcType="INTEGER" property="requireId" />
+    <result column="require_relate" jdbcType="VARCHAR" property="requireRelate" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="task_code" jdbcType="VARCHAR" property="taskCode" />
+    <result column="start_tm" jdbcType="TIMESTAMP" property="startTm" />
+    <result column="end_tm" jdbcType="TIMESTAMP" property="endTm" />
+    <result column="actual_start_tm" jdbcType="TIMESTAMP" property="actualStartTm" />
+    <result column="actual_end_tm" jdbcType="TIMESTAMP" property="actualEndTm" />
+    <result column="close_tm" jdbcType="TIMESTAMP" property="closeTm" />
+    <result column="pause_tm" jdbcType="TIMESTAMP" property="pauseTm" />
+    <result column="tester" jdbcType="VARCHAR" property="tester" />
+    <result column="with_tester" jdbcType="VARCHAR" property="withTester" />
+    <result column="expect_hour" jdbcType="REAL" property="expectHour" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_tm" jdbcType="TIMESTAMP" property="createTm" />
+    <result column="modify_tm" jdbcType="TIMESTAMP" property="modifyTm" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="zt_task_id" jdbcType="INTEGER" property="ztTaskId" />
+    <result column="zt_project_id" jdbcType="INTEGER" property="ztProjectId" />
+    <result column="percent" jdbcType="INTEGER" property="percent" />
+    <result column="actual_hour" jdbcType="REAL" property="actualHour" />
+    <result column="exclude_date" jdbcType="VARCHAR" property="excludeDate" />
+    <result column="include_date" jdbcType="VARCHAR" property="includeDate" />
+  </resultMap>
+  <resultMap id="ReportResultMap" type="com.dianwoda.test.bassy.common.domain.dto.program.ProgramTaskPercentDTO">
+    <id column="id" jdbcType="INTEGER" property="taskId" />
+    <result column="program_id" jdbcType="INTEGER" property="programId" />
+    <result column="require_id" jdbcType="INTEGER" property="requireId" />
+    <result column="require_relate" jdbcType="VARCHAR" property="requireRelate" />
+    <result column="status" jdbcType="VARCHAR" property="taskStatus" />
+    <result column="tester" jdbcType="VARCHAR" property="tester" />
+    <result column="percent" jdbcType="INTEGER" property="taskPercent" />
+    <result column="task_stage" jdbcType="VARCHAR" property="taskStage" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+  </resultMap>
+  <select id="getProgramReportTask" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT p.*
+    FROM ((program_task AS p
+    INNER JOIN (SELECT * FROM dictionary WHERE dict_group = 'TEST_TASK') AS d ON p.task_code = d.dict_code)
+    INNER JOIN (SELECT * FROM dictionary WHERE dict_group = 'PROJECT_NODE') AS d2 ON p.program_process = d2.dict_code)
+    WHERE program_id=#{programId,jdbcType=INTEGER} AND p.`status` NOT IN ('init','close')
+    ORDER BY require_id ASC,d.`order` DESC,d2.`order` DESC
+  </select>
+  <select id="getProgramTaskProcessByrRequire" parameterType="java.lang.Integer" resultMap="ReportResultMap">
+    SELECT p.id,p.program_id,p.require_id,p.require_relate,p.status,p.tester,p.percent,d.dict_value as task_name,d2.dict_value as task_stage
+    FROM ((program_task AS p
+    INNER JOIN (SELECT * FROM dictionary WHERE dict_group = 'TEST_TASK') AS d ON p.task_code = d.dict_code)
+    INNER JOIN (SELECT * FROM dictionary WHERE dict_group = 'PROJECT_NODE') AS d2 ON p.program_process = d2.dict_code)
+    WHERE program_id=#{programId,jdbcType=INTEGER} AND p.`status` NOT IN ('init','close')
+    <if test="requires.size()>0">
+      AND require_id IN
+      <foreach collection="requires" item="require" index="index" open="(" close=")" separator=",">
+        #{require}
+      </foreach>
+    </if>
+    ORDER BY require_id ASC,d.`order` DESC,d2.`order` DESC
+  </select>
+
+  <select id="getPlanRequires" resultType="map">
+    select require_id, require_relate from `program_task` where `program_id` =  #{programId} group by require_id
+  </select>
+
+  <select id="getPlanRequireBoard" resultType="map">
+    <![CDATA[
+    select a.*, group_concat(concat_ws(',', case when a.`staff_name` is null then "null" else a.`staff_name` end, a.`status`, case when a.`status` = 'init' then a.`start_tm` else a.`modify_tm` end) SEPARATOR ';') as details, COUNT(1) as rank
+    from
+        (select pt.*, d.`dict_code`, d.`dict_value`, d.`order`, s.`staff_name`
+        from program_task pt
+        left join dictionary d on pt.program_process = d.dict_code
+        left join staff s on pt.tester = s.`staff_code`
+        where program_id = #{programId}
+        and require_id = #{requireId}
+        and d.dict_group = 'PROJECT_NODE') as a
+    left join
+        (select pt.*, d.`dict_code`, d.`dict_value`, d.`order`
+        from program_task pt
+        left join dictionary d on pt.program_process = d.dict_code
+        where program_id = #{programId}
+        and require_id = #{requireId}
+        and d.dict_group = 'PROJECT_NODE') as b
+    on a.id = b.id
+    and a.`order` < b.`order` or (a.`order` = b.`order` and unix_timestamp(a.`modify_tm`) > unix_timestamp(b.`modify_tm`))
+    group by a.`program_process`
+    order by a.`order`
+    ]]>
+  </select>
+</mapper>

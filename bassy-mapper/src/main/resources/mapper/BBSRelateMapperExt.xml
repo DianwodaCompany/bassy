@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.BBSRelateMapperExt">
+
+  <select id="getRelateBbsByid" resultType="map">
+    SELECT id,title FROM bbs WHERE id in (SELECT relate_id FROM bbs_relate WHERE bbs_id = #{bbsId})
+  </select>
+
+</mapper>

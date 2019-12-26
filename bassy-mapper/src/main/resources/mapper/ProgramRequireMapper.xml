@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.ProgramRequireMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.ProgramRequire">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="require_id" jdbcType="INTEGER" property="requireId" />
+    <result column="require_name" jdbcType="VARCHAR" property="requireName" />
+    <result column="program_id" jdbcType="INTEGER" property="programId" />
+    <result column="zt_project_id" jdbcType="INTEGER" property="ztProjectId" />
+    <result column="zt_project_name" jdbcType="VARCHAR" property="ztProjectName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_tm" jdbcType="TIMESTAMP" property="createTm" />
+    <result column="modify_tm" jdbcType="TIMESTAMP" property="modifyTm" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, require_id, require_name, program_id, zt_project_id, zt_project_name, `status`, 
+    create_tm, modify_tm
+  </sql>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramRequireExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from program_require
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from program_require
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from program_require
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramRequireExample">
+    delete from program_require
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.ProgramRequire">
+    insert into program_require (id, require_id, require_name, 
+      program_id, zt_project_id, zt_project_name, 
+      `status`, create_tm, modify_tm
+      )
+    values (#{id,jdbcType=INTEGER}, #{requireId,jdbcType=INTEGER}, #{requireName,jdbcType=VARCHAR}, 
+      #{programId,jdbcType=INTEGER}, #{ztProjectId,jdbcType=INTEGER}, #{ztProjectName,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{createTm,jdbcType=TIMESTAMP}, #{modifyTm,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.ProgramRequire">
+    insert into program_require
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="requireId != null">
+        require_id,
+      </if>
+      <if test="requireName != null">
+        require_name,
+      </if>
+      <if test="programId != null">
+        program_id,
+      </if>
+      <if test="ztProjectId != null">
+        zt_project_id,
+      </if>
+      <if test="ztProjectName != null">
+        zt_project_name,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createTm != null">
+        create_tm,
+      </if>
+      <if test="modifyTm != null">
+        modify_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="requireId != null">
+        #{requireId,jdbcType=INTEGER},
+      </if>
+      <if test="requireName != null">
+        #{requireName,jdbcType=VARCHAR},
+      </if>
+      <if test="programId != null">
+        #{programId,jdbcType=INTEGER},
+      </if>
+      <if test="ztProjectId != null">
+        #{ztProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="ztProjectName != null">
+        #{ztProjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTm != null">
+        #{createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTm != null">
+        #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramRequireExample" resultType="java.lang.Long">
+    select count(*) from program_require
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update program_require
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.requireId != null">
+        require_id = #{record.requireId,jdbcType=INTEGER},
+      </if>
+      <if test="record.requireName != null">
+        require_name = #{record.requireName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.programId != null">
+        program_id = #{record.programId,jdbcType=INTEGER},
+      </if>
+      <if test="record.ztProjectId != null">
+        zt_project_id = #{record.ztProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.ztProjectName != null">
+        zt_project_name = #{record.ztProjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTm != null">
+        create_tm = #{record.createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTm != null">
+        modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update program_require
+    set id = #{record.id,jdbcType=INTEGER},
+      require_id = #{record.requireId,jdbcType=INTEGER},
+      require_name = #{record.requireName,jdbcType=VARCHAR},
+      program_id = #{record.programId,jdbcType=INTEGER},
+      zt_project_id = #{record.ztProjectId,jdbcType=INTEGER},
+      zt_project_name = #{record.ztProjectName,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=INTEGER},
+      create_tm = #{record.createTm,jdbcType=TIMESTAMP},
+      modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.ProgramRequire">
+    update program_require
+    <set>
+      <if test="requireId != null">
+        require_id = #{requireId,jdbcType=INTEGER},
+      </if>
+      <if test="requireName != null">
+        require_name = #{requireName,jdbcType=VARCHAR},
+      </if>
+      <if test="programId != null">
+        program_id = #{programId,jdbcType=INTEGER},
+      </if>
+      <if test="ztProjectId != null">
+        zt_project_id = #{ztProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="ztProjectName != null">
+        zt_project_name = #{ztProjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTm != null">
+        create_tm = #{createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTm != null">
+        modify_tm = #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.ProgramRequire">
+    update program_require
+    set require_id = #{requireId,jdbcType=INTEGER},
+      require_name = #{requireName,jdbcType=VARCHAR},
+      program_id = #{programId,jdbcType=INTEGER},
+      zt_project_id = #{ztProjectId,jdbcType=INTEGER},
+      zt_project_name = #{ztProjectName,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      create_tm = #{createTm,jdbcType=TIMESTAMP},
+      modify_tm = #{modifyTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

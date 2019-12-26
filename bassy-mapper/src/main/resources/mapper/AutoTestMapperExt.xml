@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.AutoTestMapperExt">
+    <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.AutoTest" useGeneratedKeys="true" keyProperty="id">
+    insert into auto_test (id, test_type, test_name,
+      suite_id, execute_type, execute_status,
+      `status`, creat_tm, start_tm,
+      end_tm, all_num, pass_num,
+      skipt_num, fail_num, tester,
+      report_name, creator, cc_email,
+      receive_email, fail_methods)
+    values (#{id,jdbcType=INTEGER}, #{testType,jdbcType=VARCHAR}, #{testName,jdbcType=VARCHAR},
+      #{suiteId,jdbcType=INTEGER}, #{executeType,jdbcType=VARCHAR}, #{executeStatus,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{creatTm,jdbcType=TIMESTAMP}, #{startTm,jdbcType=TIMESTAMP},
+      #{endTm,jdbcType=TIMESTAMP}, #{allNum,jdbcType=INTEGER}, #{passNum,jdbcType=INTEGER},
+      #{skiptNum,jdbcType=INTEGER}, #{failNum,jdbcType=INTEGER}, #{tester,jdbcType=VARCHAR},
+      #{reportName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{ccEmail,jdbcType=VARCHAR},
+      #{receiveEmail,jdbcType=VARCHAR}, #{failMethods,jdbcType=LONGVARCHAR})
+  </insert>
+</mapper>

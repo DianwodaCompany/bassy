@@ -1,0 +1,66 @@
+@import '../../../../node_modules/antd/lib/style/themes/default.less';
+
+.tableList {
+  .tableListOperator {
+    margin-bottom: 16px;
+    display: flex;
+    button {
+      margin-right: 4px;
+    }
+  }
+  .tableListData {
+    display: flex;
+    margin-bottom: 16px;
+  }
+}
+
+.tableListForm {
+  :global {
+    .ant-form-item {
+      margin-bottom: 24px;
+      margin-right: 0;
+      display: flex;
+      > .ant-form-item-label {
+        width: auto;
+        line-height: 32px;
+        padding-right: 8px;
+      }
+      .ant-form-item-control {
+        line-height: 32px;
+      }
+    }
+    .ant-form-item-control-wrapper {
+      flex: 1;
+    }
+  }
+  .submitButtons {
+    display: block;
+    white-space: nowrap;
+    margin-bottom: 24px;
+  }
+}
+
+.calendarTask {
+  flex: 1;
+  height: 820px;
+  background-color: #ffffff;
+}
+
+.switch {
+  text-align: right!important;
+  margin-bottom: 8px;
+  margin-top: -26px;
+
+  .span {
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+}
+
+@media screen and (min-width: @screen-xxl) {
+  .calendarTask {
+    flex: 1;
+    height: 1080px;
+    background-color: #ffffff;
+  }
+}

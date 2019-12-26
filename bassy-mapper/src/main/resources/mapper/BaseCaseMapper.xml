@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.BaseCaseMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.BaseCase">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product" jdbcType="INTEGER" property="product" />
+    <result column="module" jdbcType="INTEGER" property="module" />
+    <result column="require" jdbcType="INTEGER" property="require" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="pri" jdbcType="TINYINT" property="pri" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="last_edited_by" jdbcType="VARCHAR" property="lastEditedBy" />
+    <result column="last_edited_date" jdbcType="TIMESTAMP" property="lastEditedDate" />
+    <result column="version" jdbcType="TINYINT" property="version" />
+    <result column="parent_case" jdbcType="INTEGER" property="parentCase" />
+    <result column="family" jdbcType="TINYINT" property="family" />
+    <result column="execute_status" jdbcType="TINYINT" property="executeStatus" />
+    <result column="edited" jdbcType="TINYINT" property="edited" />
+    <result column="pushed" jdbcType="TINYINT" property="pushed" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dianwoda.test.bassy.db.entity.BaseCase">
+    <result column="precondition" jdbcType="LONGVARCHAR" property="precondition" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, product, `module`, `require`, title, pri, `type`, `status`, last_edited_by, last_edited_date, 
+    version, parent_case, family, execute_status, edited, pushed, deleted
+  </sql>
+  <sql id="Blob_Column_List">
+    precondition
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.dianwoda.test.bassy.db.entity.BaseCaseExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from base_case
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.BaseCaseExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from base_case
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from base_case
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from base_case
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.BaseCaseExample">
+    delete from base_case
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.BaseCase">
+    insert into base_case (id, product, `module`, 
+      `require`, title, pri, 
+      `type`, `status`, last_edited_by, 
+      last_edited_date, version, parent_case, 
+      family, execute_status, edited, 
+      pushed, deleted, precondition
+      )
+    values (#{id,jdbcType=INTEGER}, #{product,jdbcType=INTEGER}, #{module,jdbcType=INTEGER}, 
+      #{require,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{pri,jdbcType=TINYINT}, 
+      #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{lastEditedBy,jdbcType=VARCHAR}, 
+      #{lastEditedDate,jdbcType=TIMESTAMP}, #{version,jdbcType=TINYINT}, #{parentCase,jdbcType=INTEGER}, 
+      #{family,jdbcType=TINYINT}, #{executeStatus,jdbcType=TINYINT}, #{edited,jdbcType=TINYINT}, 
+      #{pushed,jdbcType=TINYINT}, #{deleted,jdbcType=TINYINT}, #{precondition,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.BaseCase">
+    insert into base_case
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="product != null">
+        product,
+      </if>
+      <if test="module != null">
+        `module`,
+      </if>
+      <if test="require != null">
+        `require`,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="pri != null">
+        pri,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="lastEditedBy != null">
+        last_edited_by,
+      </if>
+      <if test="lastEditedDate != null">
+        last_edited_date,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="parentCase != null">
+        parent_case,
+      </if>
+      <if test="family != null">
+        family,
+      </if>
+      <if test="executeStatus != null">
+        execute_status,
+      </if>
+      <if test="edited != null">
+        edited,
+      </if>
+      <if test="pushed != null">
+        pushed,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="precondition != null">
+        precondition,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="product != null">
+        #{product,jdbcType=INTEGER},
+      </if>
+      <if test="module != null">
+        #{module,jdbcType=INTEGER},
+      </if>
+      <if test="require != null">
+        #{require,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pri != null">
+        #{pri,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="lastEditedBy != null">
+        #{lastEditedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastEditedDate != null">
+        #{lastEditedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=TINYINT},
+      </if>
+      <if test="parentCase != null">
+        #{parentCase,jdbcType=INTEGER},
+      </if>
+      <if test="family != null">
+        #{family,jdbcType=TINYINT},
+      </if>
+      <if test="executeStatus != null">
+        #{executeStatus,jdbcType=TINYINT},
+      </if>
+      <if test="edited != null">
+        #{edited,jdbcType=TINYINT},
+      </if>
+      <if test="pushed != null">
+        #{pushed,jdbcType=TINYINT},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="precondition != null">
+        #{precondition,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.BaseCaseExample" resultType="java.lang.Long">
+    select count(*) from base_case
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update base_case
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.product != null">
+        product = #{record.product,jdbcType=INTEGER},
+      </if>
+      <if test="record.module != null">
+        `module` = #{record.module,jdbcType=INTEGER},
+      </if>
+      <if test="record.require != null">
+        `require` = #{record.require,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pri != null">
+        pri = #{record.pri,jdbcType=TINYINT},
+      </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastEditedBy != null">
+        last_edited_by = #{record.lastEditedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastEditedDate != null">
+        last_edited_date = #{record.lastEditedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.version != null">
+        version = #{record.version,jdbcType=TINYINT},
+      </if>
+      <if test="record.parentCase != null">
+        parent_case = #{record.parentCase,jdbcType=INTEGER},
+      </if>
+      <if test="record.family != null">
+        family = #{record.family,jdbcType=TINYINT},
+      </if>
+      <if test="record.executeStatus != null">
+        execute_status = #{record.executeStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.edited != null">
+        edited = #{record.edited,jdbcType=TINYINT},
+      </if>
+      <if test="record.pushed != null">
+        pushed = #{record.pushed,jdbcType=TINYINT},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.precondition != null">
+        precondition = #{record.precondition,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update base_case
+    set id = #{record.id,jdbcType=INTEGER},
+      product = #{record.product,jdbcType=INTEGER},
+      `module` = #{record.module,jdbcType=INTEGER},
+      `require` = #{record.require,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      pri = #{record.pri,jdbcType=TINYINT},
+      `type` = #{record.type,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=VARCHAR},
+      last_edited_by = #{record.lastEditedBy,jdbcType=VARCHAR},
+      last_edited_date = #{record.lastEditedDate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=TINYINT},
+      parent_case = #{record.parentCase,jdbcType=INTEGER},
+      family = #{record.family,jdbcType=TINYINT},
+      execute_status = #{record.executeStatus,jdbcType=TINYINT},
+      edited = #{record.edited,jdbcType=TINYINT},
+      pushed = #{record.pushed,jdbcType=TINYINT},
+      deleted = #{record.deleted,jdbcType=TINYINT},
+      precondition = #{record.precondition,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update base_case
+    set id = #{record.id,jdbcType=INTEGER},
+      product = #{record.product,jdbcType=INTEGER},
+      `module` = #{record.module,jdbcType=INTEGER},
+      `require` = #{record.require,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      pri = #{record.pri,jdbcType=TINYINT},
+      `type` = #{record.type,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=VARCHAR},
+      last_edited_by = #{record.lastEditedBy,jdbcType=VARCHAR},
+      last_edited_date = #{record.lastEditedDate,jdbcType=TIMESTAMP},
+      version = #{record.version,jdbcType=TINYINT},
+      parent_case = #{record.parentCase,jdbcType=INTEGER},
+      family = #{record.family,jdbcType=TINYINT},
+      execute_status = #{record.executeStatus,jdbcType=TINYINT},
+      edited = #{record.edited,jdbcType=TINYINT},
+      pushed = #{record.pushed,jdbcType=TINYINT},
+      deleted = #{record.deleted,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.BaseCase">
+    update base_case
+    <set>
+      <if test="product != null">
+        product = #{product,jdbcType=INTEGER},
+      </if>
+      <if test="module != null">
+        `module` = #{module,jdbcType=INTEGER},
+      </if>
+      <if test="require != null">
+        `require` = #{require,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pri != null">
+        pri = #{pri,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="lastEditedBy != null">
+        last_edited_by = #{lastEditedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastEditedDate != null">
+        last_edited_date = #{lastEditedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=TINYINT},
+      </if>
+      <if test="parentCase != null">
+        parent_case = #{parentCase,jdbcType=INTEGER},
+      </if>
+      <if test="family != null">
+        family = #{family,jdbcType=TINYINT},
+      </if>
+      <if test="executeStatus != null">
+        execute_status = #{executeStatus,jdbcType=TINYINT},
+      </if>
+      <if test="edited != null">
+        edited = #{edited,jdbcType=TINYINT},
+      </if>
+      <if test="pushed != null">
+        pushed = #{pushed,jdbcType=TINYINT},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="precondition != null">
+        precondition = #{precondition,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dianwoda.test.bassy.db.entity.BaseCase">
+    update base_case
+    set product = #{product,jdbcType=INTEGER},
+      `module` = #{module,jdbcType=INTEGER},
+      `require` = #{require,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      pri = #{pri,jdbcType=TINYINT},
+      `type` = #{type,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      last_edited_by = #{lastEditedBy,jdbcType=VARCHAR},
+      last_edited_date = #{lastEditedDate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=TINYINT},
+      parent_case = #{parentCase,jdbcType=INTEGER},
+      family = #{family,jdbcType=TINYINT},
+      execute_status = #{executeStatus,jdbcType=TINYINT},
+      edited = #{edited,jdbcType=TINYINT},
+      pushed = #{pushed,jdbcType=TINYINT},
+      deleted = #{deleted,jdbcType=TINYINT},
+      precondition = #{precondition,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.BaseCase">
+    update base_case
+    set product = #{product,jdbcType=INTEGER},
+      `module` = #{module,jdbcType=INTEGER},
+      `require` = #{require,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      pri = #{pri,jdbcType=TINYINT},
+      `type` = #{type,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      last_edited_by = #{lastEditedBy,jdbcType=VARCHAR},
+      last_edited_date = #{lastEditedDate,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=TINYINT},
+      parent_case = #{parentCase,jdbcType=INTEGER},
+      family = #{family,jdbcType=TINYINT},
+      execute_status = #{executeStatus,jdbcType=TINYINT},
+      edited = #{edited,jdbcType=TINYINT},
+      pushed = #{pushed,jdbcType=TINYINT},
+      deleted = #{deleted,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

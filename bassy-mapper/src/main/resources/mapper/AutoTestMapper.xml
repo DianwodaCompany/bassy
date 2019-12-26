@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.AutoTestMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.AutoTest">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="test_type" jdbcType="VARCHAR" property="testType" />
+    <result column="test_name" jdbcType="VARCHAR" property="testName" />
+    <result column="suite_id" jdbcType="INTEGER" property="suiteId" />
+    <result column="execute_type" jdbcType="VARCHAR" property="executeType" />
+    <result column="execute_status" jdbcType="VARCHAR" property="executeStatus" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="creat_tm" jdbcType="TIMESTAMP" property="creatTm" />
+    <result column="start_tm" jdbcType="TIMESTAMP" property="startTm" />
+    <result column="end_tm" jdbcType="TIMESTAMP" property="endTm" />
+    <result column="all_num" jdbcType="INTEGER" property="allNum" />
+    <result column="pass_num" jdbcType="INTEGER" property="passNum" />
+    <result column="skipt_num" jdbcType="INTEGER" property="skiptNum" />
+    <result column="fail_num" jdbcType="INTEGER" property="failNum" />
+    <result column="tester" jdbcType="VARCHAR" property="tester" />
+    <result column="report_name" jdbcType="VARCHAR" property="reportName" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="cc_email" jdbcType="VARCHAR" property="ccEmail" />
+    <result column="receive_email" jdbcType="VARCHAR" property="receiveEmail" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dianwoda.test.bassy.db.entity.AutoTest">
+    <result column="fail_methods" jdbcType="LONGVARCHAR" property="failMethods" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, test_type, test_name, suite_id, execute_type, execute_status, `status`, creat_tm, 
+    start_tm, end_tm, all_num, pass_num, skipt_num, fail_num, tester, report_name, creator, 
+    cc_email, receive_email
+  </sql>
+  <sql id="Blob_Column_List">
+    fail_methods
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from auto_test
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from auto_test
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from auto_test
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from auto_test
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestExample">
+    delete from auto_test
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.AutoTest" useGeneratedKeys="true" keyProperty="id">
+    insert into auto_test (id, test_type, test_name, 
+      suite_id, execute_type, execute_status, 
+      `status`, creat_tm, start_tm, 
+      end_tm, all_num, pass_num, 
+      skipt_num, fail_num, tester, 
+      report_name, creator, cc_email, 
+      receive_email, fail_methods)
+    values (#{id,jdbcType=INTEGER}, #{testType,jdbcType=VARCHAR}, #{testName,jdbcType=VARCHAR}, 
+      #{suiteId,jdbcType=INTEGER}, #{executeType,jdbcType=VARCHAR}, #{executeStatus,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{creatTm,jdbcType=TIMESTAMP}, #{startTm,jdbcType=TIMESTAMP}, 
+      #{endTm,jdbcType=TIMESTAMP}, #{allNum,jdbcType=INTEGER}, #{passNum,jdbcType=INTEGER}, 
+      #{skiptNum,jdbcType=INTEGER}, #{failNum,jdbcType=INTEGER}, #{tester,jdbcType=VARCHAR}, 
+      #{reportName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{ccEmail,jdbcType=VARCHAR}, 
+      #{receiveEmail,jdbcType=VARCHAR}, #{failMethods,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.AutoTest" useGeneratedKeys="true" keyProperty="id">
+    insert into auto_test
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="testType != null">
+        test_type,
+      </if>
+      <if test="testName != null">
+        test_name,
+      </if>
+      <if test="suiteId != null">
+        suite_id,
+      </if>
+      <if test="executeType != null">
+        execute_type,
+      </if>
+      <if test="executeStatus != null">
+        execute_status,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="creatTm != null">
+        creat_tm,
+      </if>
+      <if test="startTm != null">
+        start_tm,
+      </if>
+      <if test="endTm != null">
+        end_tm,
+      </if>
+      <if test="allNum != null">
+        all_num,
+      </if>
+      <if test="passNum != null">
+        pass_num,
+      </if>
+      <if test="skiptNum != null">
+        skipt_num,
+      </if>
+      <if test="failNum != null">
+        fail_num,
+      </if>
+      <if test="tester != null">
+        tester,
+      </if>
+      <if test="reportName != null">
+        report_name,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="ccEmail != null">
+        cc_email,
+      </if>
+      <if test="receiveEmail != null">
+        receive_email,
+      </if>
+      <if test="failMethods != null">
+        fail_methods,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="testType != null">
+        #{testType,jdbcType=VARCHAR},
+      </if>
+      <if test="testName != null">
+        #{testName,jdbcType=VARCHAR},
+      </if>
+      <if test="suiteId != null">
+        #{suiteId,jdbcType=INTEGER},
+      </if>
+      <if test="executeType != null">
+        #{executeType,jdbcType=VARCHAR},
+      </if>
+      <if test="executeStatus != null">
+        #{executeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="creatTm != null">
+        #{creatTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTm != null">
+        #{startTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTm != null">
+        #{endTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allNum != null">
+        #{allNum,jdbcType=INTEGER},
+      </if>
+      <if test="passNum != null">
+        #{passNum,jdbcType=INTEGER},
+      </if>
+      <if test="skiptNum != null">
+        #{skiptNum,jdbcType=INTEGER},
+      </if>
+      <if test="failNum != null">
+        #{failNum,jdbcType=INTEGER},
+      </if>
+      <if test="tester != null">
+        #{tester,jdbcType=VARCHAR},
+      </if>
+      <if test="reportName != null">
+        #{reportName,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="ccEmail != null">
+        #{ccEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveEmail != null">
+        #{receiveEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="failMethods != null">
+        #{failMethods,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestExample" resultType="java.lang.Long">
+    select count(*) from auto_test
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update auto_test
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.testType != null">
+        test_type = #{record.testType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.testName != null">
+        test_name = #{record.testName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suiteId != null">
+        suite_id = #{record.suiteId,jdbcType=INTEGER},
+      </if>
+      <if test="record.executeType != null">
+        execute_type = #{record.executeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.executeStatus != null">
+        execute_status = #{record.executeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.creatTm != null">
+        creat_tm = #{record.creatTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.startTm != null">
+        start_tm = #{record.startTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTm != null">
+        end_tm = #{record.endTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.allNum != null">
+        all_num = #{record.allNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.passNum != null">
+        pass_num = #{record.passNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.skiptNum != null">
+        skipt_num = #{record.skiptNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.failNum != null">
+        fail_num = #{record.failNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.tester != null">
+        tester = #{record.tester,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reportName != null">
+        report_name = #{record.reportName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null">
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ccEmail != null">
+        cc_email = #{record.ccEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiveEmail != null">
+        receive_email = #{record.receiveEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.failMethods != null">
+        fail_methods = #{record.failMethods,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update auto_test
+    set id = #{record.id,jdbcType=INTEGER},
+      test_type = #{record.testType,jdbcType=VARCHAR},
+      test_name = #{record.testName,jdbcType=VARCHAR},
+      suite_id = #{record.suiteId,jdbcType=INTEGER},
+      execute_type = #{record.executeType,jdbcType=VARCHAR},
+      execute_status = #{record.executeStatus,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=INTEGER},
+      creat_tm = #{record.creatTm,jdbcType=TIMESTAMP},
+      start_tm = #{record.startTm,jdbcType=TIMESTAMP},
+      end_tm = #{record.endTm,jdbcType=TIMESTAMP},
+      all_num = #{record.allNum,jdbcType=INTEGER},
+      pass_num = #{record.passNum,jdbcType=INTEGER},
+      skipt_num = #{record.skiptNum,jdbcType=INTEGER},
+      fail_num = #{record.failNum,jdbcType=INTEGER},
+      tester = #{record.tester,jdbcType=VARCHAR},
+      report_name = #{record.reportName,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      cc_email = #{record.ccEmail,jdbcType=VARCHAR},
+      receive_email = #{record.receiveEmail,jdbcType=VARCHAR},
+      fail_methods = #{record.failMethods,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update auto_test
+    set id = #{record.id,jdbcType=INTEGER},
+      test_type = #{record.testType,jdbcType=VARCHAR},
+      test_name = #{record.testName,jdbcType=VARCHAR},
+      suite_id = #{record.suiteId,jdbcType=INTEGER},
+      execute_type = #{record.executeType,jdbcType=VARCHAR},
+      execute_status = #{record.executeStatus,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=INTEGER},
+      creat_tm = #{record.creatTm,jdbcType=TIMESTAMP},
+      start_tm = #{record.startTm,jdbcType=TIMESTAMP},
+      end_tm = #{record.endTm,jdbcType=TIMESTAMP},
+      all_num = #{record.allNum,jdbcType=INTEGER},
+      pass_num = #{record.passNum,jdbcType=INTEGER},
+      skipt_num = #{record.skiptNum,jdbcType=INTEGER},
+      fail_num = #{record.failNum,jdbcType=INTEGER},
+      tester = #{record.tester,jdbcType=VARCHAR},
+      report_name = #{record.reportName,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      cc_email = #{record.ccEmail,jdbcType=VARCHAR},
+      receive_email = #{record.receiveEmail,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.AutoTest">
+    update auto_test
+    <set>
+      <if test="testType != null">
+        test_type = #{testType,jdbcType=VARCHAR},
+      </if>
+      <if test="testName != null">
+        test_name = #{testName,jdbcType=VARCHAR},
+      </if>
+      <if test="suiteId != null">
+        suite_id = #{suiteId,jdbcType=INTEGER},
+      </if>
+      <if test="executeType != null">
+        execute_type = #{executeType,jdbcType=VARCHAR},
+      </if>
+      <if test="executeStatus != null">
+        execute_status = #{executeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="creatTm != null">
+        creat_tm = #{creatTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTm != null">
+        start_tm = #{startTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTm != null">
+        end_tm = #{endTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allNum != null">
+        all_num = #{allNum,jdbcType=INTEGER},
+      </if>
+      <if test="passNum != null">
+        pass_num = #{passNum,jdbcType=INTEGER},
+      </if>
+      <if test="skiptNum != null">
+        skipt_num = #{skiptNum,jdbcType=INTEGER},
+      </if>
+      <if test="failNum != null">
+        fail_num = #{failNum,jdbcType=INTEGER},
+      </if>
+      <if test="tester != null">
+        tester = #{tester,jdbcType=VARCHAR},
+      </if>
+      <if test="reportName != null">
+        report_name = #{reportName,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="ccEmail != null">
+        cc_email = #{ccEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveEmail != null">
+        receive_email = #{receiveEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="failMethods != null">
+        fail_methods = #{failMethods,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dianwoda.test.bassy.db.entity.AutoTest">
+    update auto_test
+    set test_type = #{testType,jdbcType=VARCHAR},
+      test_name = #{testName,jdbcType=VARCHAR},
+      suite_id = #{suiteId,jdbcType=INTEGER},
+      execute_type = #{executeType,jdbcType=VARCHAR},
+      execute_status = #{executeStatus,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      creat_tm = #{creatTm,jdbcType=TIMESTAMP},
+      start_tm = #{startTm,jdbcType=TIMESTAMP},
+      end_tm = #{endTm,jdbcType=TIMESTAMP},
+      all_num = #{allNum,jdbcType=INTEGER},
+      pass_num = #{passNum,jdbcType=INTEGER},
+      skipt_num = #{skiptNum,jdbcType=INTEGER},
+      fail_num = #{failNum,jdbcType=INTEGER},
+      tester = #{tester,jdbcType=VARCHAR},
+      report_name = #{reportName,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      cc_email = #{ccEmail,jdbcType=VARCHAR},
+      receive_email = #{receiveEmail,jdbcType=VARCHAR},
+      fail_methods = #{failMethods,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.AutoTest">
+    update auto_test
+    set test_type = #{testType,jdbcType=VARCHAR},
+      test_name = #{testName,jdbcType=VARCHAR},
+      suite_id = #{suiteId,jdbcType=INTEGER},
+      execute_type = #{executeType,jdbcType=VARCHAR},
+      execute_status = #{executeStatus,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      creat_tm = #{creatTm,jdbcType=TIMESTAMP},
+      start_tm = #{startTm,jdbcType=TIMESTAMP},
+      end_tm = #{endTm,jdbcType=TIMESTAMP},
+      all_num = #{allNum,jdbcType=INTEGER},
+      pass_num = #{passNum,jdbcType=INTEGER},
+      skipt_num = #{skiptNum,jdbcType=INTEGER},
+      fail_num = #{failNum,jdbcType=INTEGER},
+      tester = #{tester,jdbcType=VARCHAR},
+      report_name = #{reportName,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      cc_email = #{ccEmail,jdbcType=VARCHAR},
+      receive_email = #{receiveEmail,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

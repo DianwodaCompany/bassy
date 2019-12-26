@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.ProcessModuleMapperExt">
+
+  <resultMap id="AllProcessModuleResultMap" type="com.dianwoda.test.bassy.db.entity.ProcessModule">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
+    <result column="read_only" jdbcType="VARCHAR" property="readOnly" />
+    <collection property="programModuleEntity" ofType="com.dianwoda.test.bassy.db.entity.ProgramModule">
+      <result column="program_module_id" jdbcType="VARCHAR" property="id" />
+      <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+      <result column="program_module_name" jdbcType="VARCHAR" property="moduleName" />
+    </collection>
+  </resultMap>
+  <select id="getAllProcessModule" resultMap="AllProcessModuleResultMap">
+    select ps.id,ps.module_name,ps.read_only,pm.id as program_module_id,pm.parent_code,pm.module_name as program_module_name
+    FROM process_module ps
+    LEFT JOIN program_module pm
+    ON ps.program_module=pm.id
+    WHERE ps.`status`='enable'
+  </select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.WorkDailyReportMapperExt">
+  <insert id="insertBatch" parameterType="java.util.List">
+      insert into work_daily_report (workday, staff_code, staff_name,
+      task_id, task_code, task_name,
+      require_id, require_relate, project_id,
+      project_name, today_hour, `type`,
+      task_log_id, `percent`, is_normal,
+      reason_detail, task_explain, modify_tm
+      )
+      values
+      <foreach collection ="list" index= "index" separator ="," item="workDaily">
+          (#{workDaily.workday,jdbcType=DATE}, #{workDaily.staffCode,jdbcType=VARCHAR},
+          #{workDaily.staffName,jdbcType=VARCHAR}, #{workDaily.taskId,jdbcType=INTEGER}, #{workDaily.taskCode,jdbcType=VARCHAR},
+          #{workDaily.taskName,jdbcType=VARCHAR}, #{workDaily.requireId,jdbcType=INTEGER}, #{workDaily.requireRelate,jdbcType=VARCHAR},
+          #{workDaily.projectId,jdbcType=INTEGER}, #{workDaily.projectName,jdbcType=VARCHAR}, #{workDaily.todayHour,jdbcType=REAL},
+          #{workDaily.type,jdbcType=INTEGER}, #{workDaily.taskLogId,jdbcType=INTEGER}, #{workDaily.percent,jdbcType=INTEGER},
+          #{workDaily.isNormal,jdbcType=TINYINT}, #{workDaily.reasonDetail,jdbcType=VARCHAR}, #{workDaily.taskExplain,jdbcType=VARCHAR},
+          #{workDaily.modifyTm,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+</mapper>

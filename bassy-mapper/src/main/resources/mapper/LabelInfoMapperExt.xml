@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.LabelInfoMapperExt">
+    <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.LabelInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="product" jdbcType="INTEGER" property="product"/>
+        <result column="citations" jdbcType="INTEGER" property="citations"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.LabelInfo" useGeneratedKeys="true"  keyProperty="id">
+        insert into label_info (id, `name`, `type`,
+          product, citations)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+          #{product,jdbcType=INTEGER}, #{citations,jdbcType=INTEGER})
+  </insert>
+</mapper>

@@ -1,0 +1,9 @@
+export const Add_All_Enable_Templates = 'Common/Add_All_Enable_Templates';
+export const Add_Project_Big_Types = 'Common/Add_Project_Big_Types';
+export const Add_All_Process_Task = 'Common/Add_All_Process_Task';
+export const Add_Current_View = 'Common/Add_Current_View';
+export const Add_Staff_Info = 'Common/Add_Staff_Info';
+export const Add_All_Project = 'Common/Add_All_Project';
+export const Add_Abnormal_Reason_Team = "Common/Add_Abnormal_Reason_Team";
+export const Add_Abnormal_Reason_Type = "Common/Add_Abnormal_Reason_Type";
+export const Add_Authenticated_Resource_codes = "Common/Add_Authenticated_Resource_codes";

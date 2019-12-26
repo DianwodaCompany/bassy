@@ -1,0 +1,141 @@
+@import '~antd/lib/style/themes/default.less';
+
+.red {
+  color: red;
+
+  .red-1 {
+  }
+}
+
+.header {
+  background: #fff !important;
+  padding: 5px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  line-height: inherit !important;
+}
+
+.logo {
+  height: 64px;
+  position: relative;
+  line-height: 64px;
+  padding-left: (@menu-collapsed-width - 32px) / 2;
+  transition: all 0.3s;
+  background: #002140;
+  overflow: hidden;
+  img {
+    display: inline-block;
+    vertical-align: middle;
+    height: 32px;
+  }
+  h1 {
+    color: white;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 20px;
+    margin: 0 0 0 12px;
+    font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-weight: 600;
+  }
+}
+
+.sider {
+  min-height: 100vh;
+  box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+  position: relative;
+  z-index: 10;
+  &.ligth {
+    background-color: white;
+    .logo {
+      background: white;
+      h1 {
+        color: #002140;
+      }
+    }
+  }
+}
+
+.icon {
+  width: 14px;
+  margin-right: 10px;
+}
+
+:global {
+  .ant-btn-sm {
+    font-size: 12px !important;
+  }
+}
+
+
+.wrap{
+  height:30px;
+  overflow: hidden;
+  position: absolute;
+  top:20px;
+  left: 250px;
+  width: 500px;
+}
+.content p{
+  margin:0;
+  height: 30px;
+  width: 100%;
+  position: absolute;
+}
+@-webkit-keyframes anim1{
+  0% {top: 30px;opacity: 1}
+  20% {top: -30px;opacity: 0}
+  40% {top: 30px;opacity: 0}
+  60% {top: 30px;opacity: 0}
+  80% {top: 30px;opacity: 0}
+  100%{top:30px;opacity: 0}
+}
+@-webkit-keyframes anim2{
+  0% {top: 30px;opacity: 0}
+  20% {top: 30px;opacity: 1}
+  40% {top: -30px;opacity: 0}
+  60% {top: 30px;opacity: 0}
+  80% {top: 30px;opacity: 0}
+  100%{top:30px;opacity: 0}
+}
+@-webkit-keyframes anim3{
+  0% {top: 30px;opacity: 0}
+  20% {top: 30px;opacity: 0}
+  40% {top: 30px;opacity: 1}
+  60% {top: -30px;opacity: 0}
+  80% {top: 30px;opacity: 0}
+  100%{top:30px;opacity: 0}
+}
+@-webkit-keyframes anim4{
+  0% {top: 30px;opacity: 0}
+  20% {top: 30px;opacity: 0}
+  40% {top: 30px;opacity: 0}
+  60% {top: 30px;opacity: 1}
+  80% {top: -30px;opacity: 0}
+  100%{top:30px;opacity: 0}
+}
+@-webkit-keyframes anim5{
+  0% {top: 30px;opacity: 0}
+  20% {top: 30px;opacity: 0}
+  40% {top: 30px;opacity: 0}
+  60% {top: 30px;opacity: 0}
+  80% {top: 30px;opacity: 1}
+  100%{top:-30px;opacity: 0}
+}
+
+.content p:nth-child(1){
+  -webkit-animation: anim1 25s cubic-bezier(0,0.75,0.75,0)  infinite;
+}
+.content p:nth-child(2){
+  -webkit-animation: anim2 25s cubic-bezier(0,0.75,0.75,0) infinite;
+}
+.content p:nth-child(3){
+  -webkit-animation: anim3 25s cubic-bezier(0,0.75,0.75,0)  infinite;
+}
+.content p:nth-child(4){
+  -webkit-animation: anim4 25s cubic-bezier(0,0.75,0.75,0)  infinite;
+}
+.content p:nth-child(5){
+  -webkit-animation: anim5 25s cubic-bezier(0,0.75,0.75,0) infinite;
+}

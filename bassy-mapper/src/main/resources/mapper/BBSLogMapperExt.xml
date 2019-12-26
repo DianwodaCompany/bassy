@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.BBSLogMapperExt">
+
+    <!--<select id="selectByCondition" resultType="map">-->
+    <!--SELECT  b.*,group_concat(t.tag) tags-->
+    <!--FROM (SELECT * FROM bbs-->
+    <!--WHERE 1 = 1-->
+    <!--<if test="type != null"><![CDATA[ AND type= #{type} ]]></if>-->
+    <!--<if test="title != null"><![CDATA[ AND title  LIKE concat('%',#{title},'%') ]]></if>-->
+    <!--<if test="authorCode != null"><![CDATA[ AND author_code= #{authorCode} ]]></if>)as b-->
+    <!--LEFT JOIN bbs_tag as t-->
+    <!--on b.id = t.bbs_id-->
+    <!--WHERE 1 = 1-->
+    <!--<if test="tag != null"><![CDATA[ AND t.tag LIKE concat('%',#{tag},'%') ]]></if>-->
+    <!--GROUP BY id-->
+    <!--<if test='sort == "newArticle" '><![CDATA[ ORDER BY modify_tm DESC]]></if>-->
+    <!--<if test='sort == "hotArticle" '><![CDATA[ ORDER BY b.like DESC,modify_tm DESC]]></if>-->
+    <!--</select>-->
+
+    <select id="getBBSLog" resultType="map">
+    SELECT log.*,bbs.title,bbs.type FROM (SELECT * FROM (SELECT * FROM `bbs_log` WHERE operation in(1,2,3) ORDER BY ins_tm DESC )as temp GROUP BY staff_code,operation,bbs_id ORDER BY ins_tm DESC LIMIT 8 ) as log ,bbs
+    WHERE log.bbs_id =bbs.id ORDER BY ins_tm DESC
+     </select>
+</mapper>

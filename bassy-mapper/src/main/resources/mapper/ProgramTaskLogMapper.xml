@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.ProgramTaskLogMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.ProgramTaskLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="program_id" jdbcType="INTEGER" property="programId" />
+    <result column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="require_id" jdbcType="INTEGER" property="requireId" />
+    <result column="start_tm" jdbcType="TIMESTAMP" property="startTm" />
+    <result column="end_tm" jdbcType="TIMESTAMP" property="endTm" />
+    <result column="task_status" jdbcType="VARCHAR" property="taskStatus" />
+    <result column="tester" jdbcType="VARCHAR" property="tester" />
+    <result column="with_tester" jdbcType="VARCHAR" property="withTester" />
+    <result column="expect_hour" jdbcType="REAL" property="expectHour" />
+    <result column="actual_hour" jdbcType="REAL" property="actualHour" />
+    <result column="today_hour" jdbcType="REAL" property="todayHour" />
+    <result column="percent" jdbcType="INTEGER" property="percent" />
+    <result column="is_normal" jdbcType="TINYINT" property="isNormal" />
+    <result column="reason_team" jdbcType="VARCHAR" property="reasonTeam" />
+    <result column="reason_type" jdbcType="VARCHAR" property="reasonType" />
+    <result column="reason_level" jdbcType="VARCHAR" property="reasonLevel" />
+    <result column="reason_detail" jdbcType="VARCHAR" property="reasonDetail" />
+    <result column="task_explain" jdbcType="VARCHAR" property="taskExplain" />
+    <result column="auto_test_id" jdbcType="INTEGER" property="autoTestId" />
+    <result column="auto_test_result" jdbcType="VARCHAR" property="autoTestResult" />
+    <result column="document" jdbcType="VARCHAR" property="document" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modify_tm" jdbcType="TIMESTAMP" property="modifyTm" />
+    <result column="zt_task_id" jdbcType="INTEGER" property="ztTaskId" />
+    <result column="abnormal_type" jdbcType="TINYINT" property="abnormalType" />
+    <result column="abnormal_owner" jdbcType="VARCHAR" property="abnormalOwner" />
+    <result column="valid" jdbcType="VARCHAR" property="valid" />
+    <result column="abnormal_depart" jdbcType="SMALLINT" property="abnormalDepart" />
+    <result column="duplicate_abnormal" jdbcType="INTEGER" property="duplicateAbnormal" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, program_id, task_id, require_id, start_tm, end_tm, task_status, tester, with_tester, 
+    expect_hour, actual_hour, today_hour, `percent`, is_normal, reason_team, reason_type, 
+    reason_level, reason_detail, task_explain, auto_test_id, auto_test_result, document, 
+    modifier, modify_tm, zt_task_id, abnormal_type, abnormal_owner, `valid`, abnormal_depart, 
+    duplicate_abnormal
+  </sql>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramTaskLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from program_task_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from program_task_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from program_task_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramTaskLogExample">
+    delete from program_task_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.ProgramTaskLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into program_task_log (program_id, task_id, require_id, 
+      start_tm, end_tm, task_status, 
+      tester, with_tester, expect_hour, 
+      actual_hour, today_hour, `percent`, 
+      is_normal, reason_team, reason_type, 
+      reason_level, reason_detail, task_explain, 
+      auto_test_id, auto_test_result, document, 
+      modifier, modify_tm, zt_task_id, 
+      abnormal_type, abnormal_owner, `valid`, 
+      abnormal_depart, duplicate_abnormal)
+    values (#{programId,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER}, #{requireId,jdbcType=INTEGER}, 
+      #{startTm,jdbcType=TIMESTAMP}, #{endTm,jdbcType=TIMESTAMP}, #{taskStatus,jdbcType=VARCHAR}, 
+      #{tester,jdbcType=VARCHAR}, #{withTester,jdbcType=VARCHAR}, #{expectHour,jdbcType=REAL}, 
+      #{actualHour,jdbcType=REAL}, #{todayHour,jdbcType=REAL}, #{percent,jdbcType=INTEGER}, 
+      #{isNormal,jdbcType=TINYINT}, #{reasonTeam,jdbcType=VARCHAR}, #{reasonType,jdbcType=VARCHAR}, 
+      #{reasonLevel,jdbcType=VARCHAR}, #{reasonDetail,jdbcType=VARCHAR}, #{taskExplain,jdbcType=VARCHAR}, 
+      #{autoTestId,jdbcType=INTEGER}, #{autoTestResult,jdbcType=VARCHAR}, #{document,jdbcType=VARCHAR}, 
+      #{modifier,jdbcType=VARCHAR}, #{modifyTm,jdbcType=TIMESTAMP}, #{ztTaskId,jdbcType=INTEGER}, 
+      #{abnormalType,jdbcType=TINYINT}, #{abnormalOwner,jdbcType=VARCHAR}, #{valid,jdbcType=VARCHAR}, 
+      #{abnormalDepart,jdbcType=SMALLINT}, #{duplicateAbnormal,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.ProgramTaskLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into program_task_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="programId != null">
+        program_id,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="requireId != null">
+        require_id,
+      </if>
+      <if test="startTm != null">
+        start_tm,
+      </if>
+      <if test="endTm != null">
+        end_tm,
+      </if>
+      <if test="taskStatus != null">
+        task_status,
+      </if>
+      <if test="tester != null">
+        tester,
+      </if>
+      <if test="withTester != null">
+        with_tester,
+      </if>
+      <if test="expectHour != null">
+        expect_hour,
+      </if>
+      <if test="actualHour != null">
+        actual_hour,
+      </if>
+      <if test="todayHour != null">
+        today_hour,
+      </if>
+      <if test="percent != null">
+        `percent`,
+      </if>
+      <if test="isNormal != null">
+        is_normal,
+      </if>
+      <if test="reasonTeam != null">
+        reason_team,
+      </if>
+      <if test="reasonType != null">
+        reason_type,
+      </if>
+      <if test="reasonLevel != null">
+        reason_level,
+      </if>
+      <if test="reasonDetail != null">
+        reason_detail,
+      </if>
+      <if test="taskExplain != null">
+        task_explain,
+      </if>
+      <if test="autoTestId != null">
+        auto_test_id,
+      </if>
+      <if test="autoTestResult != null">
+        auto_test_result,
+      </if>
+      <if test="document != null">
+        document,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="modifyTm != null">
+        modify_tm,
+      </if>
+      <if test="ztTaskId != null">
+        zt_task_id,
+      </if>
+      <if test="abnormalType != null">
+        abnormal_type,
+      </if>
+      <if test="abnormalOwner != null">
+        abnormal_owner,
+      </if>
+      <if test="valid != null">
+        `valid`,
+      </if>
+      <if test="abnormalDepart != null">
+        abnormal_depart,
+      </if>
+      <if test="duplicateAbnormal != null">
+        duplicate_abnormal,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="programId != null">
+        #{programId,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="requireId != null">
+        #{requireId,jdbcType=INTEGER},
+      </if>
+      <if test="startTm != null">
+        #{startTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTm != null">
+        #{endTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskStatus != null">
+        #{taskStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="tester != null">
+        #{tester,jdbcType=VARCHAR},
+      </if>
+      <if test="withTester != null">
+        #{withTester,jdbcType=VARCHAR},
+      </if>
+      <if test="expectHour != null">
+        #{expectHour,jdbcType=REAL},
+      </if>
+      <if test="actualHour != null">
+        #{actualHour,jdbcType=REAL},
+      </if>
+      <if test="todayHour != null">
+        #{todayHour,jdbcType=REAL},
+      </if>
+      <if test="percent != null">
+        #{percent,jdbcType=INTEGER},
+      </if>
+      <if test="isNormal != null">
+        #{isNormal,jdbcType=TINYINT},
+      </if>
+      <if test="reasonTeam != null">
+        #{reasonTeam,jdbcType=VARCHAR},
+      </if>
+      <if test="reasonType != null">
+        #{reasonType,jdbcType=VARCHAR},
+      </if>
+      <if test="reasonLevel != null">
+        #{reasonLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="reasonDetail != null">
+        #{reasonDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="taskExplain != null">
+        #{taskExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="autoTestId != null">
+        #{autoTestId,jdbcType=INTEGER},
+      </if>
+      <if test="autoTestResult != null">
+        #{autoTestResult,jdbcType=VARCHAR},
+      </if>
+      <if test="document != null">
+        #{document,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTm != null">
+        #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ztTaskId != null">
+        #{ztTaskId,jdbcType=INTEGER},
+      </if>
+      <if test="abnormalType != null">
+        #{abnormalType,jdbcType=TINYINT},
+      </if>
+      <if test="abnormalOwner != null">
+        #{abnormalOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null">
+        #{valid,jdbcType=VARCHAR},
+      </if>
+      <if test="abnormalDepart != null">
+        #{abnormalDepart,jdbcType=SMALLINT},
+      </if>
+      <if test="duplicateAbnormal != null">
+        #{duplicateAbnormal,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramTaskLogExample" resultType="java.lang.Long">
+    select count(*) from program_task_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update program_task_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.programId != null">
+        program_id = #{record.programId,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskId != null">
+        task_id = #{record.taskId,jdbcType=INTEGER},
+      </if>
+      <if test="record.requireId != null">
+        require_id = #{record.requireId,jdbcType=INTEGER},
+      </if>
+      <if test="record.startTm != null">
+        start_tm = #{record.startTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTm != null">
+        end_tm = #{record.endTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskStatus != null">
+        task_status = #{record.taskStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tester != null">
+        tester = #{record.tester,jdbcType=VARCHAR},
+      </if>
+      <if test="record.withTester != null">
+        with_tester = #{record.withTester,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expectHour != null">
+        expect_hour = #{record.expectHour,jdbcType=REAL},
+      </if>
+      <if test="record.actualHour != null">
+        actual_hour = #{record.actualHour,jdbcType=REAL},
+      </if>
+      <if test="record.todayHour != null">
+        today_hour = #{record.todayHour,jdbcType=REAL},
+      </if>
+      <if test="record.percent != null">
+        `percent` = #{record.percent,jdbcType=INTEGER},
+      </if>
+      <if test="record.isNormal != null">
+        is_normal = #{record.isNormal,jdbcType=TINYINT},
+      </if>
+      <if test="record.reasonTeam != null">
+        reason_team = #{record.reasonTeam,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reasonType != null">
+        reason_type = #{record.reasonType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reasonLevel != null">
+        reason_level = #{record.reasonLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reasonDetail != null">
+        reason_detail = #{record.reasonDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskExplain != null">
+        task_explain = #{record.taskExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.autoTestId != null">
+        auto_test_id = #{record.autoTestId,jdbcType=INTEGER},
+      </if>
+      <if test="record.autoTestResult != null">
+        auto_test_result = #{record.autoTestResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.document != null">
+        document = #{record.document,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifier != null">
+        modifier = #{record.modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyTm != null">
+        modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ztTaskId != null">
+        zt_task_id = #{record.ztTaskId,jdbcType=INTEGER},
+      </if>
+      <if test="record.abnormalType != null">
+        abnormal_type = #{record.abnormalType,jdbcType=TINYINT},
+      </if>
+      <if test="record.abnormalOwner != null">
+        abnormal_owner = #{record.abnormalOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.valid != null">
+        `valid` = #{record.valid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.abnormalDepart != null">
+        abnormal_depart = #{record.abnormalDepart,jdbcType=SMALLINT},
+      </if>
+      <if test="record.duplicateAbnormal != null">
+        duplicate_abnormal = #{record.duplicateAbnormal,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update program_task_log
+    set id = #{record.id,jdbcType=INTEGER},
+      program_id = #{record.programId,jdbcType=INTEGER},
+      task_id = #{record.taskId,jdbcType=INTEGER},
+      require_id = #{record.requireId,jdbcType=INTEGER},
+      start_tm = #{record.startTm,jdbcType=TIMESTAMP},
+      end_tm = #{record.endTm,jdbcType=TIMESTAMP},
+      task_status = #{record.taskStatus,jdbcType=VARCHAR},
+      tester = #{record.tester,jdbcType=VARCHAR},
+      with_tester = #{record.withTester,jdbcType=VARCHAR},
+      expect_hour = #{record.expectHour,jdbcType=REAL},
+      actual_hour = #{record.actualHour,jdbcType=REAL},
+      today_hour = #{record.todayHour,jdbcType=REAL},
+      `percent` = #{record.percent,jdbcType=INTEGER},
+      is_normal = #{record.isNormal,jdbcType=TINYINT},
+      reason_team = #{record.reasonTeam,jdbcType=VARCHAR},
+      reason_type = #{record.reasonType,jdbcType=VARCHAR},
+      reason_level = #{record.reasonLevel,jdbcType=VARCHAR},
+      reason_detail = #{record.reasonDetail,jdbcType=VARCHAR},
+      task_explain = #{record.taskExplain,jdbcType=VARCHAR},
+      auto_test_id = #{record.autoTestId,jdbcType=INTEGER},
+      auto_test_result = #{record.autoTestResult,jdbcType=VARCHAR},
+      document = #{record.document,jdbcType=VARCHAR},
+      modifier = #{record.modifier,jdbcType=VARCHAR},
+      modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP},
+      zt_task_id = #{record.ztTaskId,jdbcType=INTEGER},
+      abnormal_type = #{record.abnormalType,jdbcType=TINYINT},
+      abnormal_owner = #{record.abnormalOwner,jdbcType=VARCHAR},
+      `valid` = #{record.valid,jdbcType=VARCHAR},
+      abnormal_depart = #{record.abnormalDepart,jdbcType=SMALLINT},
+      duplicate_abnormal = #{record.duplicateAbnormal,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.ProgramTaskLog">
+    update program_task_log
+    <set>
+      <if test="programId != null">
+        program_id = #{programId,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="requireId != null">
+        require_id = #{requireId,jdbcType=INTEGER},
+      </if>
+      <if test="startTm != null">
+        start_tm = #{startTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTm != null">
+        end_tm = #{endTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskStatus != null">
+        task_status = #{taskStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="tester != null">
+        tester = #{tester,jdbcType=VARCHAR},
+      </if>
+      <if test="withTester != null">
+        with_tester = #{withTester,jdbcType=VARCHAR},
+      </if>
+      <if test="expectHour != null">
+        expect_hour = #{expectHour,jdbcType=REAL},
+      </if>
+      <if test="actualHour != null">
+        actual_hour = #{actualHour,jdbcType=REAL},
+      </if>
+      <if test="todayHour != null">
+        today_hour = #{todayHour,jdbcType=REAL},
+      </if>
+      <if test="percent != null">
+        `percent` = #{percent,jdbcType=INTEGER},
+      </if>
+      <if test="isNormal != null">
+        is_normal = #{isNormal,jdbcType=TINYINT},
+      </if>
+      <if test="reasonTeam != null">
+        reason_team = #{reasonTeam,jdbcType=VARCHAR},
+      </if>
+      <if test="reasonType != null">
+        reason_type = #{reasonType,jdbcType=VARCHAR},
+      </if>
+      <if test="reasonLevel != null">
+        reason_level = #{reasonLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="reasonDetail != null">
+        reason_detail = #{reasonDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="taskExplain != null">
+        task_explain = #{taskExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="autoTestId != null">
+        auto_test_id = #{autoTestId,jdbcType=INTEGER},
+      </if>
+      <if test="autoTestResult != null">
+        auto_test_result = #{autoTestResult,jdbcType=VARCHAR},
+      </if>
+      <if test="document != null">
+        document = #{document,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTm != null">
+        modify_tm = #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ztTaskId != null">
+        zt_task_id = #{ztTaskId,jdbcType=INTEGER},
+      </if>
+      <if test="abnormalType != null">
+        abnormal_type = #{abnormalType,jdbcType=TINYINT},
+      </if>
+      <if test="abnormalOwner != null">
+        abnormal_owner = #{abnormalOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null">
+        `valid` = #{valid,jdbcType=VARCHAR},
+      </if>
+      <if test="abnormalDepart != null">
+        abnormal_depart = #{abnormalDepart,jdbcType=SMALLINT},
+      </if>
+      <if test="duplicateAbnormal != null">
+        duplicate_abnormal = #{duplicateAbnormal,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.ProgramTaskLog">
+    update program_task_log
+    set program_id = #{programId,jdbcType=INTEGER},
+      task_id = #{taskId,jdbcType=INTEGER},
+      require_id = #{requireId,jdbcType=INTEGER},
+      start_tm = #{startTm,jdbcType=TIMESTAMP},
+      end_tm = #{endTm,jdbcType=TIMESTAMP},
+      task_status = #{taskStatus,jdbcType=VARCHAR},
+      tester = #{tester,jdbcType=VARCHAR},
+      with_tester = #{withTester,jdbcType=VARCHAR},
+      expect_hour = #{expectHour,jdbcType=REAL},
+      actual_hour = #{actualHour,jdbcType=REAL},
+      today_hour = #{todayHour,jdbcType=REAL},
+      `percent` = #{percent,jdbcType=INTEGER},
+      is_normal = #{isNormal,jdbcType=TINYINT},
+      reason_team = #{reasonTeam,jdbcType=VARCHAR},
+      reason_type = #{reasonType,jdbcType=VARCHAR},
+      reason_level = #{reasonLevel,jdbcType=VARCHAR},
+      reason_detail = #{reasonDetail,jdbcType=VARCHAR},
+      task_explain = #{taskExplain,jdbcType=VARCHAR},
+      auto_test_id = #{autoTestId,jdbcType=INTEGER},
+      auto_test_result = #{autoTestResult,jdbcType=VARCHAR},
+      document = #{document,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      modify_tm = #{modifyTm,jdbcType=TIMESTAMP},
+      zt_task_id = #{ztTaskId,jdbcType=INTEGER},
+      abnormal_type = #{abnormalType,jdbcType=TINYINT},
+      abnormal_owner = #{abnormalOwner,jdbcType=VARCHAR},
+      `valid` = #{valid,jdbcType=VARCHAR},
+      abnormal_depart = #{abnormalDepart,jdbcType=SMALLINT},
+      duplicate_abnormal = #{duplicateAbnormal,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

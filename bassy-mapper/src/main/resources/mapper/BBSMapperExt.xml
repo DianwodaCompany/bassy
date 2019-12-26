@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.BBSMapperExt">
+
+    <!--<select id="selectByCondition" resultType="map">-->
+    <!--SELECT  b.*,group_concat(t.tag) tags-->
+    <!--FROM (SELECT * FROM bbs-->
+    <!--WHERE 1 = 1-->
+    <!--<if test="type != null"><![CDATA[ AND type= #{type} ]]></if>-->
+    <!--<if test="title != null"><![CDATA[ AND title  LIKE concat('%',#{title},'%') ]]></if>-->
+    <!--<if test="authorCode != null"><![CDATA[ AND author_code= #{authorCode} ]]></if>)as b-->
+    <!--LEFT JOIN bbs_tag as t-->
+    <!--on b.id = t.bbs_id-->
+    <!--WHERE 1 = 1-->
+    <!--<if test="tag != null"><![CDATA[ AND t.tag LIKE concat('%',#{tag},'%') ]]></if>-->
+    <!--GROUP BY id-->
+    <!--<if test='sort == "newArticle" '><![CDATA[ ORDER BY modify_tm DESC]]></if>-->
+    <!--<if test='sort == "hotArticle" '><![CDATA[ ORDER BY b.like DESC,modify_tm DESC]]></if>-->
+    <!--</select>-->
+
+    <select id="selectByCondition" resultType="map">
+        SELECT * from (SELECT b.*,GROUP_CONCAT(t.tag) as tags
+        FROM (SELECT * FROM bbs
+        WHERE 1 = 1
+        <if test="type != null"><![CDATA[ AND type= #{type} ]]></if>
+        <if test="noteType != null"><![CDATA[ AND note_type= #{noteType} ]]></if>
+        <if test="authorCode != null"><![CDATA[ AND author_code= #{authorCode} ]]></if>) as b
+        LEFT JOIN bbs_tag as t
+        ON b.id = t.bbs_id GROUP BY b.id ) as temp
+        WHERE 1 = 1
+        <if test="keyword != null">
+            <![CDATA[AND temp.title  LIKE  concat('%',#{keyword},'%') or temp.tags  LIKE  concat('%',#{keyword},'%')]]></if>
+
+        <if test='sort == "newArticle" '><![CDATA[ ORDER BY temp.modify_tm DESC]]></if>
+        <if test='sort == "hotArticle" '><![CDATA[ ORDER BY temp.like DESC,temp.modify_tm DESC]]></if>
+    </select>
+
+    <select id="countPersCtrb" resultType="map">
+    SELECT author_code,author_name,COUNT(*) as ctrbNum  FROM `bbs` GROUP BY author_code ORDER BY ctrbNum DESC LIMIT 5 ;
+   </select>
+
+    <select id="likeStatus" resultType="java.lang.Integer" >
+        select count(*)FROM `bbs_log` WHERE
+        staff_code=#{staffCode} AND bbs_id =#{bbsId} AND operation in (3,4);
+    </select>
+
+    <!--<select id="getBBSLog" resultType="map">-->
+    <!--SELECT log.*,bbs.title FROM (SELECT * FROM (SELECT * FROM `bbs_log` WHERE operation in(1,2,3) ORDER BY id DESC ) as temp-->
+    <!--GROUP BY staff_code,operation,bbs_id  ORDER BY id DESC LIMIT 10 )as log ,bbs WHERE log.bbs_id =bbs.id-->
+   <!--</select>-->
+
+    <update id="updateLike">
+         update bbs set `like` =`like`
+        <choose>
+            <when test="likeStatus">
+                <![CDATA[ -1]]>
+            </when>
+            <otherwise>
+                <![CDATA[ +1]]>
+            </otherwise>
+        </choose>
+        where id = #{id}
+    </update>
+
+    <select id="countStudyTimes" resultType="map">
+        SELECT GROUP_CONCAT(staff_code)as author_code,GROUP_CONCAT(staff_name)as author_name,temp2.count,COUNT(DISTINCT id) as people_num FROM (SELECT * FROM staff LEFT JOIN (SELECT author_code,COUNT(DISTINCT id) as count FROM `bbs`
+        WHERE 1 = 1
+        <if test="week != null"><![CDATA[ AND `week`= #{week} ]]></if>
+        AND `type`='30'
+        GROUP BY  author_code ) as temp  on staff_code = temp.author_code WHERE status=10) as temp2  GROUP BY count
+   </select>
+
+    <select id="countStudyTimes2"  resultType="java.lang.Integer">
+        SELECT count(*)  FROM bbs WHERE author_code=04684 <if test="week != null"><![CDATA[ AND `week`= #{week} ]]></if>
+        AND `type`='30'
+    </select>
+
+</mapper>

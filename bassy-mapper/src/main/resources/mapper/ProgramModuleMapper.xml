@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.ProgramModuleMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.ProgramModule">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+    <result column="persons" jdbcType="VARCHAR" property="persons" />
+    <result column="core_nodes" jdbcType="VARCHAR" property="coreNodes" />
+    <result column="requires" jdbcType="VARCHAR" property="requires" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="read_only" jdbcType="VARCHAR" property="readOnly" />
+    <result column="work_id" jdbcType="VARCHAR" property="workId" />
+    <result column="pressing_reason" jdbcType="VARCHAR" property="pressingReason" />
+    <result column="is_check" jdbcType="VARCHAR" property="isCheck" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_tm" jdbcType="TIMESTAMP" property="createTm" />
+    <result column="modify_tm" jdbcType="TIMESTAMP" property="modifyTm" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="inner_project_type" jdbcType="VARCHAR" property="innerProjectType" />
+    <result column="each_task_work_hour" jdbcType="INTEGER" property="eachTaskWorkHour" />
+    <result column="daily_task_num" jdbcType="INTEGER" property="dailyTaskNum" />
+    <result column="is_loop" jdbcType="VARCHAR" property="isLoop" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, module_name, description, parent_code, persons, core_nodes, requires, remark, 
+    read_only, work_id, pressing_reason, is_check, `status`, create_tm, modify_tm, creator, 
+    modifier, inner_project_type, each_task_work_hour, daily_task_num, is_loop
+  </sql>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramModuleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from program_module
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from program_module
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from program_module
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramModuleExample">
+    delete from program_module
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.ProgramModule">
+    insert into program_module (id, module_name, description, 
+      parent_code, persons, core_nodes, 
+      requires, remark, read_only, 
+      work_id, pressing_reason, is_check, 
+      `status`, create_tm, modify_tm, 
+      creator, modifier, inner_project_type, 
+      each_task_work_hour, daily_task_num, is_loop
+      )
+    values (#{id,jdbcType=INTEGER}, #{moduleName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{parentCode,jdbcType=VARCHAR}, #{persons,jdbcType=VARCHAR}, #{coreNodes,jdbcType=VARCHAR}, 
+      #{requires,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{readOnly,jdbcType=VARCHAR}, 
+      #{workId,jdbcType=VARCHAR}, #{pressingReason,jdbcType=VARCHAR}, #{isCheck,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createTm,jdbcType=TIMESTAMP}, #{modifyTm,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{innerProjectType,jdbcType=VARCHAR}, 
+      #{eachTaskWorkHour,jdbcType=INTEGER}, #{dailyTaskNum,jdbcType=INTEGER}, #{isLoop,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.ProgramModule">
+    insert into program_module
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="moduleName != null">
+        module_name,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="parentCode != null">
+        parent_code,
+      </if>
+      <if test="persons != null">
+        persons,
+      </if>
+      <if test="coreNodes != null">
+        core_nodes,
+      </if>
+      <if test="requires != null">
+        requires,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="readOnly != null">
+        read_only,
+      </if>
+      <if test="workId != null">
+        work_id,
+      </if>
+      <if test="pressingReason != null">
+        pressing_reason,
+      </if>
+      <if test="isCheck != null">
+        is_check,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createTm != null">
+        create_tm,
+      </if>
+      <if test="modifyTm != null">
+        modify_tm,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="innerProjectType != null">
+        inner_project_type,
+      </if>
+      <if test="eachTaskWorkHour != null">
+        each_task_work_hour,
+      </if>
+      <if test="dailyTaskNum != null">
+        daily_task_num,
+      </if>
+      <if test="isLoop != null">
+        is_loop,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="moduleName != null">
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="persons != null">
+        #{persons,jdbcType=VARCHAR},
+      </if>
+      <if test="coreNodes != null">
+        #{coreNodes,jdbcType=VARCHAR},
+      </if>
+      <if test="requires != null">
+        #{requires,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="readOnly != null">
+        #{readOnly,jdbcType=VARCHAR},
+      </if>
+      <if test="workId != null">
+        #{workId,jdbcType=VARCHAR},
+      </if>
+      <if test="pressingReason != null">
+        #{pressingReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheck != null">
+        #{isCheck,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTm != null">
+        #{createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTm != null">
+        #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="innerProjectType != null">
+        #{innerProjectType,jdbcType=VARCHAR},
+      </if>
+      <if test="eachTaskWorkHour != null">
+        #{eachTaskWorkHour,jdbcType=INTEGER},
+      </if>
+      <if test="dailyTaskNum != null">
+        #{dailyTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="isLoop != null">
+        #{isLoop,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.ProgramModuleExample" resultType="java.lang.Long">
+    select count(*) from program_module
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update program_module
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.moduleName != null">
+        module_name = #{record.moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentCode != null">
+        parent_code = #{record.parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.persons != null">
+        persons = #{record.persons,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coreNodes != null">
+        core_nodes = #{record.coreNodes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requires != null">
+        requires = #{record.requires,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.readOnly != null">
+        read_only = #{record.readOnly,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workId != null">
+        work_id = #{record.workId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pressingReason != null">
+        pressing_reason = #{record.pressingReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isCheck != null">
+        is_check = #{record.isCheck,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTm != null">
+        create_tm = #{record.createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTm != null">
+        modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creator != null">
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifier != null">
+        modifier = #{record.modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.innerProjectType != null">
+        inner_project_type = #{record.innerProjectType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eachTaskWorkHour != null">
+        each_task_work_hour = #{record.eachTaskWorkHour,jdbcType=INTEGER},
+      </if>
+      <if test="record.dailyTaskNum != null">
+        daily_task_num = #{record.dailyTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.isLoop != null">
+        is_loop = #{record.isLoop,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update program_module
+    set id = #{record.id,jdbcType=INTEGER},
+      module_name = #{record.moduleName,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      parent_code = #{record.parentCode,jdbcType=VARCHAR},
+      persons = #{record.persons,jdbcType=VARCHAR},
+      core_nodes = #{record.coreNodes,jdbcType=VARCHAR},
+      requires = #{record.requires,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      read_only = #{record.readOnly,jdbcType=VARCHAR},
+      work_id = #{record.workId,jdbcType=VARCHAR},
+      pressing_reason = #{record.pressingReason,jdbcType=VARCHAR},
+      is_check = #{record.isCheck,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=VARCHAR},
+      create_tm = #{record.createTm,jdbcType=TIMESTAMP},
+      modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      modifier = #{record.modifier,jdbcType=VARCHAR},
+      inner_project_type = #{record.innerProjectType,jdbcType=VARCHAR},
+      each_task_work_hour = #{record.eachTaskWorkHour,jdbcType=INTEGER},
+      daily_task_num = #{record.dailyTaskNum,jdbcType=INTEGER},
+      is_loop = #{record.isLoop,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.ProgramModule">
+    update program_module
+    <set>
+      <if test="moduleName != null">
+        module_name = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        parent_code = #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="persons != null">
+        persons = #{persons,jdbcType=VARCHAR},
+      </if>
+      <if test="coreNodes != null">
+        core_nodes = #{coreNodes,jdbcType=VARCHAR},
+      </if>
+      <if test="requires != null">
+        requires = #{requires,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="readOnly != null">
+        read_only = #{readOnly,jdbcType=VARCHAR},
+      </if>
+      <if test="workId != null">
+        work_id = #{workId,jdbcType=VARCHAR},
+      </if>
+      <if test="pressingReason != null">
+        pressing_reason = #{pressingReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheck != null">
+        is_check = #{isCheck,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTm != null">
+        create_tm = #{createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTm != null">
+        modify_tm = #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="innerProjectType != null">
+        inner_project_type = #{innerProjectType,jdbcType=VARCHAR},
+      </if>
+      <if test="eachTaskWorkHour != null">
+        each_task_work_hour = #{eachTaskWorkHour,jdbcType=INTEGER},
+      </if>
+      <if test="dailyTaskNum != null">
+        daily_task_num = #{dailyTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="isLoop != null">
+        is_loop = #{isLoop,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.ProgramModule">
+    update program_module
+    set module_name = #{moduleName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      parent_code = #{parentCode,jdbcType=VARCHAR},
+      persons = #{persons,jdbcType=VARCHAR},
+      core_nodes = #{coreNodes,jdbcType=VARCHAR},
+      requires = #{requires,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      read_only = #{readOnly,jdbcType=VARCHAR},
+      work_id = #{workId,jdbcType=VARCHAR},
+      pressing_reason = #{pressingReason,jdbcType=VARCHAR},
+      is_check = #{isCheck,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      create_tm = #{createTm,jdbcType=TIMESTAMP},
+      modify_tm = #{modifyTm,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      inner_project_type = #{innerProjectType,jdbcType=VARCHAR},
+      each_task_work_hour = #{eachTaskWorkHour,jdbcType=INTEGER},
+      daily_task_num = #{dailyTaskNum,jdbcType=INTEGER},
+      is_loop = #{isLoop,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

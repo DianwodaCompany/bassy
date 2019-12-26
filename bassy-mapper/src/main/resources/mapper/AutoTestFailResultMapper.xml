@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.AutoTestFailResultMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.AutoTestFailResult">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="auto_test_id" jdbcType="INTEGER" property="autoTestId" />
+    <result column="test_name" jdbcType="VARCHAR" property="testName" />
+    <result column="test_type" jdbcType="VARCHAR" property="testType" />
+    <result column="fail_method" jdbcType="VARCHAR" property="failMethod" />
+    <result column="fail_reason" jdbcType="INTEGER" property="failReason" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="tester_code" jdbcType="VARCHAR" property="testerCode" />
+    <result column="tester_name" jdbcType="VARCHAR" property="testerName" />
+    <result column="update_tm" jdbcType="TIMESTAMP" property="updateTm" />
+    <result column="create_tm" jdbcType="TIMESTAMP" property="createTm" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, auto_test_id, test_name, test_type, fail_method, fail_reason, remark, tester_code, 
+    tester_name, update_tm, create_tm
+  </sql>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestFailResultExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from auto_test_fail_result
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from auto_test_fail_result
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from auto_test_fail_result
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestFailResultExample">
+    delete from auto_test_fail_result
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestFailResult">
+    insert into auto_test_fail_result (id, auto_test_id, test_name, 
+      test_type, fail_method, fail_reason, 
+      remark, tester_code, tester_name, 
+      update_tm, create_tm)
+    values (#{id,jdbcType=INTEGER}, #{autoTestId,jdbcType=INTEGER}, #{testName,jdbcType=VARCHAR}, 
+      #{testType,jdbcType=VARCHAR}, #{failMethod,jdbcType=VARCHAR}, #{failReason,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{testerCode,jdbcType=VARCHAR}, #{testerName,jdbcType=VARCHAR}, 
+      #{updateTm,jdbcType=TIMESTAMP}, #{createTm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestFailResult">
+    insert into auto_test_fail_result
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="autoTestId != null">
+        auto_test_id,
+      </if>
+      <if test="testName != null">
+        test_name,
+      </if>
+      <if test="testType != null">
+        test_type,
+      </if>
+      <if test="failMethod != null">
+        fail_method,
+      </if>
+      <if test="failReason != null">
+        fail_reason,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="testerCode != null">
+        tester_code,
+      </if>
+      <if test="testerName != null">
+        tester_name,
+      </if>
+      <if test="updateTm != null">
+        update_tm,
+      </if>
+      <if test="createTm != null">
+        create_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="autoTestId != null">
+        #{autoTestId,jdbcType=INTEGER},
+      </if>
+      <if test="testName != null">
+        #{testName,jdbcType=VARCHAR},
+      </if>
+      <if test="testType != null">
+        #{testType,jdbcType=VARCHAR},
+      </if>
+      <if test="failMethod != null">
+        #{failMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        #{failReason,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="testerCode != null">
+        #{testerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="testerName != null">
+        #{testerName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTm != null">
+        #{updateTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTm != null">
+        #{createTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestFailResultExample" resultType="java.lang.Long">
+    select count(*) from auto_test_fail_result
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update auto_test_fail_result
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.autoTestId != null">
+        auto_test_id = #{record.autoTestId,jdbcType=INTEGER},
+      </if>
+      <if test="record.testName != null">
+        test_name = #{record.testName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.testType != null">
+        test_type = #{record.testType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.failMethod != null">
+        fail_method = #{record.failMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.failReason != null">
+        fail_reason = #{record.failReason,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.testerCode != null">
+        tester_code = #{record.testerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.testerName != null">
+        tester_name = #{record.testerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTm != null">
+        update_tm = #{record.updateTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTm != null">
+        create_tm = #{record.createTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update auto_test_fail_result
+    set id = #{record.id,jdbcType=INTEGER},
+      auto_test_id = #{record.autoTestId,jdbcType=INTEGER},
+      test_name = #{record.testName,jdbcType=VARCHAR},
+      test_type = #{record.testType,jdbcType=VARCHAR},
+      fail_method = #{record.failMethod,jdbcType=VARCHAR},
+      fail_reason = #{record.failReason,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      tester_code = #{record.testerCode,jdbcType=VARCHAR},
+      tester_name = #{record.testerName,jdbcType=VARCHAR},
+      update_tm = #{record.updateTm,jdbcType=TIMESTAMP},
+      create_tm = #{record.createTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestFailResult">
+    update auto_test_fail_result
+    <set>
+      <if test="autoTestId != null">
+        auto_test_id = #{autoTestId,jdbcType=INTEGER},
+      </if>
+      <if test="testName != null">
+        test_name = #{testName,jdbcType=VARCHAR},
+      </if>
+      <if test="testType != null">
+        test_type = #{testType,jdbcType=VARCHAR},
+      </if>
+      <if test="failMethod != null">
+        fail_method = #{failMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="testerCode != null">
+        tester_code = #{testerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="testerName != null">
+        tester_name = #{testerName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTm != null">
+        update_tm = #{updateTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTm != null">
+        create_tm = #{createTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.AutoTestFailResult">
+    update auto_test_fail_result
+    set auto_test_id = #{autoTestId,jdbcType=INTEGER},
+      test_name = #{testName,jdbcType=VARCHAR},
+      test_type = #{testType,jdbcType=VARCHAR},
+      fail_method = #{failMethod,jdbcType=VARCHAR},
+      fail_reason = #{failReason,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      tester_code = #{testerCode,jdbcType=VARCHAR},
+      tester_name = #{testerName,jdbcType=VARCHAR},
+      update_tm = #{updateTm,jdbcType=TIMESTAMP},
+      create_tm = #{createTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

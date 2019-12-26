@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+		PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+		"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+	<!--
+	Mybatis生成Mapper配置文件
+	1，cmd切换至项目根目录
+	2，执行：mvn mybatis-generator:generate -Dmybatis.generator.configurationFile=src/main/resources/generatorConfig.xml
+ -->
+	<classPathEntry
+			location="F:\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
+
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+		<!--分割SQL关键字 默认为false-->
+		<property name="autoDelimitKeywords" value="true" />
+		<!--分割关键字的前符号-->
+		<property name="beginningDelimiter" value="`" />
+		<!--分割关键字的后符号-->
+		<property name="endingDelimiter" value="`" />
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<!-- optional，旨在创建class时，对注释进行控制 -->
+		<commentGenerator>
+			<property name="suppressDate" value="true"/>
+			<property name="suppressAllComments" value="true"/>
+		</commentGenerator>
+
+		<!--jdbc的数据库连接 -->
+		<jdbcConnection
+				driverClass="com.mysql.jdbc.Driver"
+				connectionURL="jdbc:mysql://rm-bp188fb70hknd9gi2o.mysql.rds.aliyuncs.com:3306/qualitydb"
+				userId="devuser"
+				password="Devuser123">
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<javaModelGenerator targetPackage="com.dianwoda.test.bassy.db.entity"
+							targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<javaClientGenerator type="XMLMAPPER"
+							 targetPackage="com.dianwoda.test.bassy.db.dao" targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		<table tableName="auto_test_passing_rate" domainObjectName="AutoTestPassingRate">
+		</table>
+
+	</context>
+</generatorConfiguration>

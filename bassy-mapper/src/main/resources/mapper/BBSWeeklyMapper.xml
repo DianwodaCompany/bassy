@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.BBSWeeklyMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.BBSWeekly">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="weekly_id" jdbcType="INTEGER" property="weeklyId" />
+    <result column="bbs_id" jdbcType="INTEGER" property="bbsId" />
+    <result column="note_type" jdbcType="TINYINT" property="noteType" />
+    <result column="week" jdbcType="VARCHAR" property="week" />
+    <result column="create_tm" jdbcType="TIMESTAMP" property="createTm" />
+    <result column="modify_tm" jdbcType="TIMESTAMP" property="modifyTm" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, weekly_id, bbs_id, note_type, week, create_tm, modify_tm
+  </sql>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.BBSWeeklyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bbs_weekly
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bbs_weekly
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bbs_weekly
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.BBSWeeklyExample">
+    delete from bbs_weekly
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.BBSWeekly">
+    insert into bbs_weekly (id, weekly_id, bbs_id, 
+      note_type, week, create_tm, 
+      modify_tm)
+    values (#{id,jdbcType=INTEGER}, #{weeklyId,jdbcType=INTEGER}, #{bbsId,jdbcType=INTEGER}, 
+      #{noteType,jdbcType=TINYINT}, #{week,jdbcType=VARCHAR}, #{createTm,jdbcType=TIMESTAMP}, 
+      #{modifyTm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.BBSWeekly">
+    insert into bbs_weekly
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="weeklyId != null">
+        weekly_id,
+      </if>
+      <if test="bbsId != null">
+        bbs_id,
+      </if>
+      <if test="noteType != null">
+        note_type,
+      </if>
+      <if test="week != null">
+        week,
+      </if>
+      <if test="createTm != null">
+        create_tm,
+      </if>
+      <if test="modifyTm != null">
+        modify_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="weeklyId != null">
+        #{weeklyId,jdbcType=INTEGER},
+      </if>
+      <if test="bbsId != null">
+        #{bbsId,jdbcType=INTEGER},
+      </if>
+      <if test="noteType != null">
+        #{noteType,jdbcType=TINYINT},
+      </if>
+      <if test="week != null">
+        #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="createTm != null">
+        #{createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTm != null">
+        #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.BBSWeeklyExample" resultType="java.lang.Long">
+    select count(*) from bbs_weekly
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bbs_weekly
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.weeklyId != null">
+        weekly_id = #{record.weeklyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bbsId != null">
+        bbs_id = #{record.bbsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.noteType != null">
+        note_type = #{record.noteType,jdbcType=TINYINT},
+      </if>
+      <if test="record.week != null">
+        week = #{record.week,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTm != null">
+        create_tm = #{record.createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTm != null">
+        modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bbs_weekly
+    set id = #{record.id,jdbcType=INTEGER},
+      weekly_id = #{record.weeklyId,jdbcType=INTEGER},
+      bbs_id = #{record.bbsId,jdbcType=INTEGER},
+      note_type = #{record.noteType,jdbcType=TINYINT},
+      week = #{record.week,jdbcType=VARCHAR},
+      create_tm = #{record.createTm,jdbcType=TIMESTAMP},
+      modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.BBSWeekly">
+    update bbs_weekly
+    <set>
+      <if test="weeklyId != null">
+        weekly_id = #{weeklyId,jdbcType=INTEGER},
+      </if>
+      <if test="bbsId != null">
+        bbs_id = #{bbsId,jdbcType=INTEGER},
+      </if>
+      <if test="noteType != null">
+        note_type = #{noteType,jdbcType=TINYINT},
+      </if>
+      <if test="week != null">
+        week = #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="createTm != null">
+        create_tm = #{createTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTm != null">
+        modify_tm = #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.BBSWeekly">
+    update bbs_weekly
+    set weekly_id = #{weeklyId,jdbcType=INTEGER},
+      bbs_id = #{bbsId,jdbcType=INTEGER},
+      note_type = #{noteType,jdbcType=TINYINT},
+      week = #{week,jdbcType=VARCHAR},
+      create_tm = #{createTm,jdbcType=TIMESTAMP},
+      modify_tm = #{modifyTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

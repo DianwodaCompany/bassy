@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dianwoda.test.bassy.db.dao.AssetLogMapper">
+  <resultMap id="BaseResultMap" type="com.dianwoda.test.bassy.db.entity.AssetLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="asset_id" jdbcType="INTEGER" property="assetId" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="borrower" jdbcType="VARCHAR" property="borrower" />
+    <result column="borrow_tm" jdbcType="TIMESTAMP" property="borrowTm" />
+    <result column="return_tm" jdbcType="TIMESTAMP" property="returnTm" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modify_tm" jdbcType="TIMESTAMP" property="modifyTm" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, asset_id, `status`, borrower, borrow_tm, return_tm, remark, modifier, modify_tm
+  </sql>
+  <select id="selectByExample" parameterType="com.dianwoda.test.bassy.db.entity.AssetLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from asset_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from asset_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from asset_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dianwoda.test.bassy.db.entity.AssetLogExample">
+    delete from asset_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dianwoda.test.bassy.db.entity.AssetLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into asset_log (asset_id, `status`, borrower, 
+      borrow_tm, return_tm, remark, 
+      modifier, modify_tm)
+    values (#{assetId,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT}, #{borrower,jdbcType=VARCHAR}, 
+      #{borrowTm,jdbcType=TIMESTAMP}, #{returnTm,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
+      #{modifier,jdbcType=VARCHAR}, #{modifyTm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dianwoda.test.bassy.db.entity.AssetLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into asset_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="assetId != null">
+        asset_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="borrower != null">
+        borrower,
+      </if>
+      <if test="borrowTm != null">
+        borrow_tm,
+      </if>
+      <if test="returnTm != null">
+        return_tm,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="modifyTm != null">
+        modify_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="assetId != null">
+        #{assetId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="borrower != null">
+        #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTm != null">
+        #{borrowTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnTm != null">
+        #{returnTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTm != null">
+        #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dianwoda.test.bassy.db.entity.AssetLogExample" resultType="java.lang.Long">
+    select count(*) from asset_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update asset_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.assetId != null">
+        asset_id = #{record.assetId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=SMALLINT},
+      </if>
+      <if test="record.borrower != null">
+        borrower = #{record.borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowTm != null">
+        borrow_tm = #{record.borrowTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.returnTm != null">
+        return_tm = #{record.returnTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifier != null">
+        modifier = #{record.modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyTm != null">
+        modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update asset_log
+    set id = #{record.id,jdbcType=INTEGER},
+      asset_id = #{record.assetId,jdbcType=INTEGER},
+      `status` = #{record.status,jdbcType=SMALLINT},
+      borrower = #{record.borrower,jdbcType=VARCHAR},
+      borrow_tm = #{record.borrowTm,jdbcType=TIMESTAMP},
+      return_tm = #{record.returnTm,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      modifier = #{record.modifier,jdbcType=VARCHAR},
+      modify_tm = #{record.modifyTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dianwoda.test.bassy.db.entity.AssetLog">
+    update asset_log
+    <set>
+      <if test="assetId != null">
+        asset_id = #{assetId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="borrower != null">
+        borrower = #{borrower,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTm != null">
+        borrow_tm = #{borrowTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnTm != null">
+        return_tm = #{returnTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTm != null">
+        modify_tm = #{modifyTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dianwoda.test.bassy.db.entity.AssetLog">
+    update asset_log
+    set asset_id = #{assetId,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=SMALLINT},
+      borrower = #{borrower,jdbcType=VARCHAR},
+      borrow_tm = #{borrowTm,jdbcType=TIMESTAMP},
+      return_tm = #{returnTm,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      modify_tm = #{modifyTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

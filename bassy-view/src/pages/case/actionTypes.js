@@ -1,0 +1,16 @@
+export const Case_Type = 'Case_Type';
+export const Add_All_Product = 'Add_All_Product';
+export const Case_Pri = 'Case_Pri';
+export const Product_Module_List = 'Product_Module_List';
+export const Update_Test_Case_Detail = 'Update_Test_Case_Detail';
+export const Update_Case_Step = 'Update_Case_Step';
+export const Update_Case_Label = 'Update_Case_Label';
+export const Add_Conflict_Case = 'Add_Conflict_Case';
+export const Clear_Conflict_Case = 'Clear_Conflict_Case';
+export const Add_Conflict_Case_List = 'Add_Conflict_Case_List';
+export const Update_Conflict_Case = 'Update_Conflict_Case';
+export const Clear_Conflict_Case_Result = 'Clear_Conflict_Case_Result';
+export const View_Conflict_Solve = 'View_Conflict_Solve';
+export const View_Conflict_List = 'View_Conflict_List';
+export const Remove_Conflict_Case_List = 'Remove_Conflict_Case_List';
+export const Update_Program_Case_Info = 'Update_Program_Case_Info';
