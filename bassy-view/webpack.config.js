@@ -1,10 +1,8 @@
 const path = require('path');
-const mode = "development";
 const webpack = require('webpack');
 module.exports = {
-	mode,
+	mode: 'development',
 	entry: [
-		// 'webpack-hot-middleware/client?noInfo=false&reload=true&quiet=false',
 		"./src/index.js"
 	],
 	output: {
