@@ -19,7 +19,7 @@ cd ../bassy-view && npm run build || exit_on_err 1 "bassy view build failed."
 #      exit_on_err 1 "build bassy view failed !"
 #fi
 # copy bundle.js to bassy web
-cp ../bassy-view/dist/* ../bassy-web/src/main/resources/static/
+cp ../bassy-view/dist/bundle.js ../bassy-web/src/main/resources/static/bundle.js
 
 # maven package the bassy
 mvn clean package -Dmaven.test.skip=true -f ../pom.xml || exit_on_err 1 "package bassy failed."

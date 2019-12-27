@@ -1,7 +1,6 @@
 import React from 'react';
 import {Avatar, Icon} from "antd"
 import {css, cx} from 'emotion';
-import '../../statics/zwicon.css';
 import * as refer from '../../statics/refer';
 import {handlePropagation} from '../../methods/assistFunctions'; // 用于禁用按钮点击。如果使用 button 的 disable 属性实现，会由于点击事件冒泡导致 Toolbar 被隐藏
 
