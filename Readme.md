@@ -23,8 +23,7 @@ quality control (QC) platform
 - [安装部署](#安装部署) 
 <!-- /MarkdownTOC -->
 
-
-# 功能概述
+<h1 name="功能概述">功能概述</h1>
 
 - 解决
 
