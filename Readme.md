@@ -6,7 +6,7 @@ quality control (QC) platform
 
 <!-- MarkdownTOC -->
 
-- [Bassy 功能概述](#功能概述)
+- [Bassy 功能概述](#功能概述)  
 - [系统详述](#系统详述)
     - [功能概览](#功能概览)
     - [我的任务](#我的任务)
@@ -21,6 +21,12 @@ quality control (QC) platform
     - [资产管理](#资产管理)
     - [配置管理](#配置管理)
 - [安装部署](#安装部署) 
+<!-- /MarkdownTOC -->
+
+<a name="功能概述"></a>
+# 功能概述
+
+- 解决
 
 # 安装部署
 1.在bassy-mapper模块下，存放有数据库表和数据初始化sql文件，请先初始化数据库信息。  
