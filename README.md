@@ -22,6 +22,10 @@ quality control (QC) platform
     - [配置管理](#配置管理)
 - [安装部署](#安装部署) 
 
+<h1 name="功能概述">功能概述</h1>
+
+- 解决
+
 # 安装部署
 1.在bassy-mapper模块下，存放有数据库表和数据初始化sql文件，请先初始化数据库信息。  
 2.在bassy-web模块下，配置数据库和redis的连接配置。  
