@@ -24,6 +24,9 @@ quality control (QC) platform
 <!-- /MarkdownTOC -->
 
 <h1 name="功能概述">功能概述</h1>
+功能概览  
+
+![avatar](https://github.com/DianwodaCompany/bassy/blob/master/readme-pic/zhengtijieshao.png) 
 
 - 管理项目立项后，从建测试计划-》测试任务拆分-》测试执行-》灰发-》上线的全过程
 - 项目管理有许多能提升效能以及收集过程数据的亮点功能，例如：  
@@ -47,19 +50,31 @@ quality control (QC) platform
 
 ![avatar](https://github.com/DianwodaCompany/bassy/blob/master/readme-pic/1.png) 
 
-  
+任务自动拆分  
 
-<h5 name="项目测试文档相关">2.项目测试文档相关</h5>
-![avatar](https://github.com/DianwodaCompany/bassy/blob/master/readme-pic/testreport.png)
+
+![avatar](https://github.com/DianwodaCompany/bassy/blob/master/readme-pic/1.png) 
+
+<h5 name="项目测试文档相关">2.项目测试文档相关</h5>  
+测试日报自动生成  
+
+![avatar](https://github.com/DianwodaCompany/bassy/blob/master/readme-pic/testjob.png)
+
+项目的状态的变更管理  
+![avatar](https://github.com/DianwodaCompany/bassy/blob/master/readme-pic/plan cycle.png)
+
 <h5 name="内部项目运用">3.内部项目运用</h5>
 
 <h3 name="测试用例">4.测试用例</h3>
-1、项目用例与项目结合  
-2、基准用例和项目用例分开  
-3、
+
+测试用例与基线用例的完美结合  
+![avatar](https://github.com/DianwodaCompany/bassy/blob/master/readme-pic/testcase.png)
+
 <h3 name="智库">5.智库</h3>
 <h3 name="资源情况">6.资源情况</h3>
-人员热力图
+人员热力图  
+
+![avatar](https://github.com/DianwodaCompany/bassy/blob/master/readme-pic/relitu.png)
 
 <h3 name="统计分析">7.统计分析</h3>
 <h3 name="资产管理">8.资产管理</h3>
