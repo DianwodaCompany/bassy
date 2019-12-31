@@ -50,6 +50,7 @@ quality control (QC) platform
   
 
 <h5 name="项目测试文档相关">2.项目测试文档相关</h5>
+![avatar](https://github.com/DianwodaCompany/bassy/blob/master/readme-pic/testreport.png)
 <h5 name="内部项目运用">3.内部项目运用</h5>
 
 <h3 name="测试用例">4.测试用例</h3>
