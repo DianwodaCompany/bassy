@@ -45,7 +45,7 @@ quality control (QC) platform
 <h5 name="贯穿产品项目测试阶段的生命周期">1.贯穿产品项目测试阶段的生命周期</h5>  
 <head>新增项目</head>  
 
-![avatar](../readme-pic/1.png)   
+![avatar](https://github.com/DianwodaCompany/bassy/blob/master/readme-pic/1.png)   
 
 <h5 name="项目测试文档相关">2.项目测试文档相关</h5>
 <h5 name="内部项目运用">3.内部项目运用</h5>
